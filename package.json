@@ -1,0 +1,108 @@
+{
+  "name": "@openhps/opencv",
+  "version": "0.1.0-alpha.1",
+  "description": "Open Hybrid Positioning System - OpenCV component",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/OpenHPS/openhps-opencv.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "commit": "npm run build:typescript && npm run lint && npm run test && npx git-cz",
+    "test": "mocha --experimental-worker",
+    "test:jenkins": "jenkins-mocha --cobertura",
+    "cover": "nyc mocha && nyc report --reporter=cobertura",
+    "lint": "eslint src/**",
+    "clean": "shx rm -rf ./dist && shx rm -rf ./docs",
+    "build": "npm run clean && npm-run-all --parallel build:typescript && npm run build:webpack",
+    "build:typescript": "tsc",
+    "build:typedoc": "typedoc --excludePrivate --hideGenerator --out docs src",
+    "publish:development": "standard-version --prerelease alpha -m 'chore(alpha): %s' --author='ci <ci@openhps.org>' && npm publish --tag dev",
+    "publish:beta": "standard-version --prerelease beta -m 'chore(beta): %s' --author='ci <ci@openhps.org>' && npm publish --tag beta",
+    "publish:release": "standard-version -m 'chore(release): %s' --author='ci <ci@openhps.org>' && npm publish --tag latest"
+  },
+  "author": "Maxim Van de Wynckel",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@openhps/core": "0.1.0-alpha.76",
+    "opencv4nodejs": "^5.6.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/register": "^7.11.5",
+    "@babel/runtime": "^7.11.2",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^5.2.7",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "chai": "^4.2.0",
+    "eslint": "^7.8.1",
+    "eslint-config-prettier": ">=6.11.0",
+    "eslint-plugin-import": ">=2.22.0",
+    "eslint-plugin-jsdoc": "^30.3.1",
+    "eslint-plugin-prettier": ">=3.1.4",
+    "husky": "^4.2.3",
+    "jenkins-mocha": "^8.0.0",
+    "mocha": "^6.2.3",
+    "npm-run-all": "^4.1.5",
+    "nyc": "^14.1.1",
+    "prettier": "^2.1.1",
+    "shx": "^0.3.2",
+    "standard-version": "^7.1.0",
+    "ts-node": "^8.8.2",
+    "typedoc": "^0.15.8",
+    "typescript": "^3.8.3",
+    "webpack": "^4.44.1",
+    "webpack-auto-inject-version": "^1.2.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "nyc": {
+    "branches": 10,
+    "lines": 20,
+    "functions": 20,
+    "statements": 20,
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "test"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "cache": true,
+    "all": true,
+    "check-coverage": true,
+    "report-dir": "./coverage"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS --no-verify"
+    }
+  }
+}
