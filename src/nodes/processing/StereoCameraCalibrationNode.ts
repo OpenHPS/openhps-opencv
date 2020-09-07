@@ -40,9 +40,11 @@ export class StereoCameraCalibrationNode extends ProcessingNode<StereoImageFrame
                         imageFrame.rightImage.drawChessboardCornersAsync(boardSize, values[1].corners, true),
                     );
 
-                    Promise.all(drawPromises).then((_) => {
-                        resolve(imageFrame);
-                    });
+                    Promise.all(drawPromises)
+                        .then(() => {
+                            resolve(imageFrame);
+                        })
+                        .catch(reject);
                 } else {
                     resolve();
                 }

@@ -11,7 +11,6 @@ export class VideoSource extends SourceNode<VideoFrame> {
         super(source, options);
 
         this.once('build', this._onBuild.bind(this));
-        this.once('destroy', this._onDestroy.bind(this));
     }
 
     private _onBuild(): void {
@@ -20,14 +19,10 @@ export class VideoSource extends SourceNode<VideoFrame> {
         }
     }
 
-    private _onDestroy(): void {
-
-    }
-
     /**
      * Load video from file, stream, port
      *
-     * @param {string} filePath File path
+     * @param {string} videoSource File path
      * @returns {VideoSource} Video source instance
      */
     public load(videoSource: string | number): VideoSource {

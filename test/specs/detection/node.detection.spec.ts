@@ -7,7 +7,7 @@ import { expect } from 'chai';
 describe('node processing', () => {
     describe('image detection', () => {
 
-        it('should be serializable', (done) => {
+        it('should detect blobs', (done) => {
             const imageSource = new ImageSource();
             ModelBuilder.create()
                 .from(imageSource)

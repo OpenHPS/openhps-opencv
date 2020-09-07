@@ -7,3 +7,4 @@ export * from './ImageProcessingNode';
 export * from './ImageErodeNode';
 export * from './ImageDilateNode';
 export * from './ImageRotationNode';
+export * from './ImageTransformNode';

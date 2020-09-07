@@ -3,7 +3,6 @@ import { VideoFrame, ImageFrame } from '../../data';
 import { Mat, imread } from 'opencv4nodejs';
 
 export class ImageSource extends SourceNode<ImageFrame> {
-
     constructor(source?: CameraObject) {
         super(source);
     }
@@ -19,9 +18,11 @@ export class ImageSource extends SourceNode<ImageFrame> {
                 return reject(new Error());
             }
             imageFrame.image = frameImage;
-            this.push(imageFrame).then(() => {
-                resolve();
-            }).catch(reject);
+            this.push(imageFrame)
+                .then(() => {
+                    resolve();
+                })
+                .catch(reject);
         });
     }
 
@@ -31,7 +32,7 @@ export class ImageSource extends SourceNode<ImageFrame> {
      * @returns {Promise<VideoSource>} Pull promise
      */
     public onPull(): Promise<VideoFrame> {
-        return new Promise<VideoFrame>((resolve, reject) => {
+        return new Promise<VideoFrame>((resolve) => {
             resolve();
         });
     }

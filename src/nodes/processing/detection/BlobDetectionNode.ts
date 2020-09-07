@@ -1,7 +1,7 @@
-import { ImageFrame } from "../../../data";
+import { ImageFrame } from '../../../data';
 import { GraphShape, NodeOptions } from '@openhps/core';
-import { ImageErodeNode } from "../ImageErodeNode";
-import { ImageDilateNode } from "../ImageDilateNode";
+import { ImageErodeNode } from '../ImageErodeNode';
+import { ImageDilateNode } from '../ImageDilateNode';
 
 export class BlobDetectionNode<InOut extends ImageFrame> extends GraphShape<InOut, InOut> {
     protected options: BlobDetectionOptions;
@@ -9,7 +9,7 @@ export class BlobDetectionNode<InOut extends ImageFrame> extends GraphShape<InOu
     constructor(options?: BlobDetectionOptions) {
         super();
         this.options = options || {};
-    
+
         this._build();
     }
 
@@ -17,9 +17,6 @@ export class BlobDetectionNode<InOut extends ImageFrame> extends GraphShape<InOu
         this.addNode(new ImageErodeNode());
         this.addNode(new ImageDilateNode());
     }
-
 }
 
-export interface BlobDetectionOptions extends NodeOptions {
-
-}
+export type BlobDetectionOptions = NodeOptions;

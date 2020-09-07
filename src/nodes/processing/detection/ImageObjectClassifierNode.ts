@@ -33,7 +33,7 @@ export class ImageObjectClassifierNode<T extends ImageFeatureObject> extends Pro
      * @returns {Promise<ImageFrame>} Image frame processing promise
      */
     public process(data: ImageFrame): Promise<ImageFrame> {
-        return new Promise<ImageFrame>((resolve, reject) => {
+        return new Promise<ImageFrame>((resolve) => {
             const result = this._classifier.detectMultiScaleGpu(data.image.bgrToGray()) as any;
             if (result !== null) {
                 // Objects detected in image

@@ -4,7 +4,7 @@ import { imshow, Mat, waitKey, Vec3 } from 'opencv4nodejs';
 
 /**
  * OpenCV Image Display Sink
- * 
+ *
  * ## About
  * This sink node will display the image frame using ```imshow```
  */

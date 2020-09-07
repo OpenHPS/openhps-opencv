@@ -30,12 +30,12 @@ export class ImageResizeNode<InOut extends ImageFrame> extends ImageProcessingNo
             }
             // Resize the image
             const mat = image.resize(
-                    Math.round(image.sizes[0] * scale),
-                    Math.round(image.sizes[1] * scale),
-                    this.options.fx ? this.options.fx : 2,
-                    this.options.fy ? this.options.fy : 2,
-                    this.options.interpolation ? this.options.interpolation : INTER_CUBIC,
-                );
+                Math.round(image.sizes[0] * scale),
+                Math.round(image.sizes[1] * scale),
+                this.options.fx ? this.options.fx : 2,
+                this.options.fy ? this.options.fy : 2,
+                this.options.interpolation ? this.options.interpolation : INTER_CUBIC,
+            );
             resolve(mat);
         });
     }

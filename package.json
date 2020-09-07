@@ -28,7 +28,7 @@
   "author": "Maxim Van de Wynckel",
   "license": "Apache-2.0",
   "dependencies": {
-    "@openhps/core": "0.1.0-alpha.76",
+    "@openhps/core": "0.1.0-alpha.77",
     "opencv4nodejs": "^5.6.0",
     "reflect-metadata": "^0.1.13"
   },
