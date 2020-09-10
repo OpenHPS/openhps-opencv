@@ -11,6 +11,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "commit": "npm run build:typescript && npm run lint && npm run test && npx git-cz",
     "test": "mocha --experimental-worker",
@@ -18,7 +21,7 @@
     "cover": "nyc mocha && nyc report --reporter=cobertura",
     "lint": "eslint src/**",
     "clean": "shx rm -rf ./dist && shx rm -rf ./docs",
-    "build": "npm run clean && npm-run-all --parallel build:typescript && npm run build:webpack",
+    "build": "npm run clean && npm-run-all --parallel build:typescript",
     "build:typescript": "tsc",
     "build:typedoc": "typedoc --excludePrivate --hideGenerator --out docs src",
     "publish:development": "standard-version --prerelease alpha -m 'chore(alpha): %s' --author='ci <ci@openhps.org>' && npm publish --tag dev",
@@ -28,18 +31,11 @@
   "author": "Maxim Van de Wynckel",
   "license": "Apache-2.0",
   "dependencies": {
-    "@openhps/core": "0.1.0-alpha.77",
+    "@openhps/core": "0.1.0-alpha.82",
     "opencv4nodejs": "^5.6.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@babel/cli": "^7.11.6",
-    "@babel/core": "^7.11.6",
-    "@babel/node": "^7.10.5",
-    "@babel/plugin-transform-runtime": "^7.11.5",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/register": "^7.11.5",
-    "@babel/runtime": "^7.11.2",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@types/chai": "^4.2.11",
@@ -61,8 +57,8 @@
     "shx": "^0.3.2",
     "standard-version": "^7.1.0",
     "ts-node": "^8.8.2",
-    "typedoc": "^0.15.8",
-    "typescript": "^3.8.3",
+    "typedoc": "^0.19.1",
+    "typescript": "^4.0.2",
     "webpack": "^4.44.1",
     "webpack-auto-inject-version": "^1.2.2",
     "webpack-cli": "^3.3.12"
@@ -102,7 +98,7 @@
     "hooks": {
       "pre-commit": "npm run lint",
       "pre-push": "npm run test",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS --no-verify"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
 }

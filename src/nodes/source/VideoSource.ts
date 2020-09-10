@@ -1,6 +1,6 @@
 import { SourceNode, CameraObject, SourceNodeOptions } from '@openhps/core';
 import { VideoFrame } from '../../data';
-import { VideoCapture, Mat } from 'opencv4nodejs';
+import { VideoCapture, Mat, CAP_PROP_FPS } from 'opencv4nodejs';
 
 export class VideoSource extends SourceNode<VideoFrame> {
     private _videoCapture: VideoCapture;
@@ -14,6 +14,9 @@ export class VideoSource extends SourceNode<VideoFrame> {
     }
 
     private _onBuild(): void {
+        if (this.options.videoSource) {
+            this.load(this.options.videoSource);
+        }
         if (this.options.autoPlay) {
             return this.play();
         }
@@ -65,10 +68,14 @@ export class VideoSource extends SourceNode<VideoFrame> {
 
     private _readFrame(): VideoFrame {
         const videoFrame = new VideoFrame();
+        videoFrame.fps = this._videoCapture.get(CAP_PROP_FPS);
+
         const frameImage: Mat = this._videoCapture.read();
         if (frameImage.empty) {
             return undefined;
         }
+        videoFrame.height = frameImage.sizes[0];
+        videoFrame.width = frameImage.sizes[1];
         videoFrame.image = frameImage;
         return videoFrame;
     }
@@ -79,4 +86,6 @@ export interface VideoSourceOptions extends SourceNodeOptions {
      * Autoplay the video when building the node
      */
     autoPlay?: boolean;
+
+    videoSource?: string;
 }
