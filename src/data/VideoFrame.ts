@@ -6,6 +6,7 @@ export class VideoFrame extends ImageFrame {
     public fps: number;
     public width: number;
     public height: number;
+    public fourcc: number;
 
     constructor() {
         super();

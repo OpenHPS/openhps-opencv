@@ -1,6 +1,6 @@
 import { SourceNode, CameraObject, SourceNodeOptions } from '@openhps/core';
 import { VideoFrame } from '../../data';
-import { VideoCapture, Mat, CAP_PROP_FPS } from 'opencv4nodejs';
+import { VideoCapture, Mat, CAP_PROP_FPS, CAP_PROP_FOURCC, VideoWriter } from 'opencv4nodejs';
 
 export class VideoSource extends SourceNode<VideoFrame> {
     private _videoCapture: VideoCapture;
@@ -77,6 +77,7 @@ export class VideoSource extends SourceNode<VideoFrame> {
         videoFrame.height = frameImage.sizes[0];
         videoFrame.width = frameImage.sizes[1];
         videoFrame.image = frameImage;
+        videoFrame.fourcc = this._videoCapture.get(CAP_PROP_FOURCC);
         return videoFrame;
     }
 }
