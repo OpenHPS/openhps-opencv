@@ -11,6 +11,7 @@ export class VideoSource extends SourceNode<VideoFrame> {
         super(source, options);
 
         this.once('build', this._onBuild.bind(this));
+        this.once('destroy', this.stop.bind(this));
     }
 
     private _onBuild(): void {
@@ -52,7 +53,9 @@ export class VideoSource extends SourceNode<VideoFrame> {
     }
 
     public stop(): void {
-        clearInterval(this._timer);
+        if (this._timer) {
+            clearInterval(this._timer);
+        }
     }
 
     /**
