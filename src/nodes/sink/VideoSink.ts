@@ -1,6 +1,7 @@
 import { VideoFrame } from '../../data';
 import { SinkNode, SinkNodeOptions } from '@openhps/core';
 import { VideoWriter, Size } from 'opencv4nodejs';
+import * as fs from 'fs';
 
 export class VideoSink<In extends VideoFrame> extends SinkNode<In> {
     protected options: VideoSinkOptions;
@@ -10,6 +11,10 @@ export class VideoSink<In extends VideoFrame> extends SinkNode<In> {
         super(options);
 
         this.once('destroy', this._destroyWriter.bind(this));
+    }
+
+    public get videoWriter(): VideoWriter {
+        return this._writer;
     }
 
     private _destroyWriter(): void {
@@ -23,6 +28,11 @@ export class VideoSink<In extends VideoFrame> extends SinkNode<In> {
 
             // Create writer on first frame
             if (!this._writer) {
+                // Check if the file exists
+                if (fs.existsSync(this.options.filePath)) {
+                    fs.unlinkSync(this.options.filePath);
+                }
+
                 this._writer = new VideoWriter(
                     this.options.filePath,
                     this.options.codec ? VideoWriter.fourcc(this.options.codec) : frame.fourcc,

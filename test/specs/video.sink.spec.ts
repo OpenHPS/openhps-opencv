@@ -8,23 +8,25 @@ describe('video', () => {
 
         it('should save a video frame by frame', (done) => {
             let model;
+            const source = new VideoSource(null, {
+                autoPlay: true,
+                videoSource: "./test/data/data-gaze-1.mp4",
+                fps: -1,
+                throttleRead: true,
+                throttlePush: true
+            });
             ModelBuilder.create()
-                .from(new VideoSource(null, {
-                    autoPlay: true,
-                    videoSource: "./test/data/data-gaze-1.mp4"
-                }))
+                .from(source)
                 .to(new VideoSink({
                     codec: 'mp4v',
-                    fps: 30,
                     filePath: './test/data/output.mp4',
-                    width: 640,
-                    height: 480
+                    fps: 30
                 }))
                 .build().then(m => {
                     setTimeout(() => {
                         m.emit('destroy');
                         done();
-                    }, 5000);
+                    }, 1000);
                 });
         }).timeout(30000);
 
