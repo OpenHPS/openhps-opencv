@@ -84,10 +84,10 @@ export class VideoSource extends SourceNode<VideoFrame> {
                     this._readFrame()
                         .then((videoFrame: VideoFrame) => {
                             if (!videoFrame) {
+                                this.emit('eof');
                                 return clearInterval(this._timer);
                             }
                             this._frame++;
-                            console.log(this.actualFPS);
                             if (!this.options.throttlePush) {
                                 ready = true;
                             }
@@ -136,7 +136,7 @@ export class VideoSource extends SourceNode<VideoFrame> {
                 .readAsync()
                 .then((frameImage: Mat) => {
                     if (frameImage.empty) {
-                        return undefined;
+                        return resolve(undefined);
                     }
                     videoFrame.height = frameImage.sizes[0];
                     videoFrame.width = frameImage.sizes[1];
