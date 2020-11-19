@@ -1,6 +1,6 @@
 {
   "name": "@openhps/opencv",
-  "version": "0.1.0-alpha.6",
+  "version": "0.1.0-alpha.7",
   "description": "Open Hybrid Positioning System - OpenCV component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,7 @@
   "author": "Maxim Van de Wynckel",
   "license": "Apache-2.0",
   "dependencies": {
-    "@openhps/core": "0.1.0-alpha.83",
+    "@openhps/core": ">=0.1.0-alpha.84",
     "opencv4nodejs": "^5.6.0",
     "reflect-metadata": "^0.1.13"
   },
