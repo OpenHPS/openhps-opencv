@@ -7,7 +7,6 @@ describe('video', () => {
     describe('output', () => {
 
         it('should save a video frame by frame', (done) => {
-            let model;
             const source = new VideoSource(null, {
                 autoPlay: true,
                 videoSource: "./test/data/data-gaze-1.mp4",
@@ -24,7 +23,7 @@ describe('video', () => {
                 }))
                 .build().then(m => {
                     setTimeout(() => {
-                        m.emit('destroy');
+                        m.destroy();
                         done();
                     }, 1000);
                 });

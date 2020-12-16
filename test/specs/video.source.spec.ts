@@ -55,24 +55,24 @@ describe('video', () => {
                 });
         }).timeout(10000);
         
-        it('fps', (done) => {
-            const callbackSinkNode = new CallbackSinkNode();
-            let model;
-            let videoSource = new VideoSource(undefined, {
-                autoPlay: true,
-                fps: 60
-            }).load(0 + OpenCV.CAP_DSHOW);
-            videoSource.videoCapture.set(OpenCV.CAP_PROP_FOURCC, OpenCV.VideoWriter.fourcc('MJPG'));
-            videoSource.videoCapture.set(OpenCV.CAP_PROP_FPS, 30);
-            videoSource.videoCapture.set(OpenCV.CAP_PROP_FRAME_WIDTH, 1980);
-            videoSource.videoCapture.set(OpenCV.CAP_PROP_FRAME_HEIGHT, 1020);
-            ModelBuilder.create()
-                .from(videoSource)
-                .to(new ImageDisplaySink())
-                .build().then(m => {
-                    model = m;
-                });
-        }).timeout(30000);
+        // it('fps', (done) => {
+        //     const callbackSinkNode = new CallbackSinkNode();
+        //     let model;
+        //     let videoSource = new VideoSource(undefined, {
+        //         autoPlay: true,
+        //         fps: 60
+        //     }).load(0 + OpenCV.CAP_DSHOW);
+        //     videoSource.videoCapture.set(OpenCV.CAP_PROP_FOURCC, OpenCV.VideoWriter.fourcc('MJPG'));
+        //     videoSource.videoCapture.set(OpenCV.CAP_PROP_FPS, 30);
+        //     videoSource.videoCapture.set(OpenCV.CAP_PROP_FRAME_WIDTH, 1980);
+        //     videoSource.videoCapture.set(OpenCV.CAP_PROP_FRAME_HEIGHT, 1020);
+        //     ModelBuilder.create()
+        //         .from(videoSource)
+        //         .to(new ImageDisplaySink())
+        //         .build().then(m => {
+        //             model = m;
+        //         });
+        // }).timeout(30000);
 
     });
 });

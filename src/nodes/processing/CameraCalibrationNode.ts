@@ -25,7 +25,7 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                         imageFrame.image.drawChessboardCorners(boardSize, value.corners, true);
                         resolve(imageFrame);
                     } else {
-                        resolve();
+                        resolve(undefined);
                     }
                 });
         });

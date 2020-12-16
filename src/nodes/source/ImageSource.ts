@@ -33,7 +33,7 @@ export class ImageSource extends SourceNode<ImageFrame> {
      */
     public onPull(): Promise<VideoFrame> {
         return new Promise<VideoFrame>((resolve) => {
-            resolve();
+            resolve(undefined);
         });
     }
 }

@@ -136,7 +136,7 @@ export class VideoSource extends SourceNode<VideoFrame> {
                 .readAsync()
                 .then((frameImage: Mat) => {
                     if (frameImage.empty) {
-                        return undefined;
+                        return resolve(undefined);
                     }
                     videoFrame.height = frameImage.sizes[0];
                     videoFrame.width = frameImage.sizes[1];

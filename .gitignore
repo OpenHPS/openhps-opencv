@@ -4,3 +4,4 @@ docs/
 coverage/
 artifacts/
 .nyc_output/
+test/data/output.mp4

@@ -73,7 +73,7 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
             const leftImage: Mat = this._leftVideoCapture.read();
             const rightImage: Mat = this._rightVideoCapture.read();
             if (leftImage.empty || rightImage.empty) {
-                return resolve();
+                return resolve(undefined);
             }
             videoFrame.leftImage = leftImage;
             videoFrame.rightImage = rightImage;

@@ -46,7 +46,7 @@ export class StereoCameraCalibrationNode extends ProcessingNode<StereoImageFrame
                         })
                         .catch(reject);
                 } else {
-                    resolve();
+                    resolve(undefined);
                 }
             });
         });
