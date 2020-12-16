@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'justadudewhohacks/opencv-nodejs' }
-    }
+    agent any
     stages {
         stage('Build') {
             steps {
