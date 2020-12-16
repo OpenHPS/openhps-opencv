@@ -8,7 +8,8 @@ pipeline {
                 echo 'Building ...'
                 sh 'npm install'
                 sh 'npm run clean'
-                sh 'npm run build:typescript'
+                sh 'npm run build:cjs'
+                sh 'npm run build:esm'
             }
         }
         stage('Quality') {
