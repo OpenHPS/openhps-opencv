@@ -87,7 +87,6 @@ export class VideoSource extends SourceNode<VideoFrame> {
                                 return clearInterval(this._timer);
                             }
                             this._frame++;
-                            console.log(this.actualFPS);
                             if (!this.options.throttlePush) {
                                 ready = true;
                             }
@@ -131,6 +130,7 @@ export class VideoSource extends SourceNode<VideoFrame> {
     private _readFrame(): Promise<VideoFrame> {
         return new Promise((resolve, reject) => {
             const videoFrame = new VideoFrame();
+            videoFrame.source = this.source;
             videoFrame.fps = this.options.fps;
             this._videoCapture
                 .readAsync()
