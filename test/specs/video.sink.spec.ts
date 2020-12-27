@@ -7,7 +7,7 @@ describe('video', () => {
     describe('output', () => {
 
         it('should save a video frame by frame', (done) => {
-            const source = new VideoSource(null, {
+            const source = new VideoSource({
                 autoPlay: true,
                 videoSource: "./test/data/data-gaze-1.mp4",
                 fps: -1,

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Example - OpenHPS Browser</title>
+    </head>
+    <body>
+        <video id="abc" width="1280" height="720"></video>
+        <canvas id="123" width="1280" height="720"></canvas>
+
+        <script src="https://cdn.jsdelivr.net/npm/@openhps/core@0.2.0-alpha.9"></script>
+        <script src="../../dist/web/openhps-opencv.min.js"></script>
+        <script>
+            // Dependencies
+            const core = window['@openhps/core'];
+            const cv = window['@openhps/opencv'];
+            
+            let model;
+
+            function initWebcam() {
+                navigator.getUserMedia = navigator.getUserMedia ||
+                         navigator.webkitGetUserMedia ||
+                         navigator.mozGetUserMedia;
+
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ audio: true, video: { 
+                            width: 1280, 
+                            height: 720,
+                            facingMode: "user"  // Front facing camera
+                        }},
+                        function(stream) {
+                            var video = document.getElementById('abc');
+                            video.srcObject = stream;
+                            video.onloadedmetadata = function(e) {
+                                video.play();
+                                initModel();
+                            };
+                        },
+                        function(err) {
+                            console.error("The following error occurred: " + err.name);
+                        }
+                    );
+                } else {
+                    console.error("getUserMedia not supported");
+                }
+            }
+
+            function initModel() {
+                core.ModelBuilder.create()
+                    .withLogger(console.log)
+                    .from(new cv.VideoSource({
+                        videoSource: document.getElementById("abc"),
+                        autoPlay: true,
+                        fps: 30,
+                        width: 1280, 
+                        height: 720,
+                    }))
+                    .via(new cv.ColorMaskNode({
+                        minRange: [90, 50, 50],
+		                maxRange: [140, 255, 255]
+                    }))
+                    .to(new cv.ImageDisplaySink({
+                        windowTitle: "123",
+                        waitKey: false
+                    }), new core.CallbackSinkNode(frame => {
+                        frame.image.delete();
+                    }))
+                    .build().then(m => {
+                        model = m;
+                    }).catch(console.error);
+            }
+
+            initWebcam();
+        </script>
+    </body>
+</html>

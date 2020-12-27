@@ -62,6 +62,10 @@ pipeline {
                 reportFiles: '*.*',
                 reportName: "Documentation"
             ])
+            archiveArtifacts artifacts: 'dist/web/openhps-opencv.js', fingerprint: true
+            archiveArtifacts artifacts: 'dist/web/openhps-opencv.js.map', fingerprint: true
+            archiveArtifacts artifacts: 'dist/web/openhps-opencv.min.js', fingerprint: true
+            archiveArtifacts artifacts: 'dist/web/openhps-opencv.min.js.map', fingerprint: true
             deleteDir()
         }
     }
