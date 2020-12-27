@@ -43,7 +43,8 @@
                     console.error("getUserMedia not supported");
                 }
             }
-
+            let l = [0, 0, 0]
+            let h = [60, 255, 200]
             function initModel() {
                 core.ModelBuilder.create()
                     .withLogger(console.log)
@@ -55,12 +56,29 @@
                         height: 720,
                     }))
                     .via(new cv.ColorMaskNode({
-                        minRange: [90, 50, 50],
-		                maxRange: [140, 255, 255]
+                        minRange: l,
+                        maxRange: h
                     }))
+                    .via(new cv.ImageErodeNode({
+                        iterations: 5
+                    }))
+                    .via(new cv.ImageDilateNode({
+                        iterations: 5
+                    }))
+                    // .via(new (class X extends cv.ImageProcessingNode {
+                    //     processImage(image) {
+                    //         return new Promise((resolve) => {
+                    //             let dst = new cv.OpenCV.Mat();
+                    //             const kernel = new cv.OpenCV.Mat();
+                    //             let anchor = new cv.OpenCV.Point(0, 0);
+                    //             cv.OpenCV.dilate(image, dst, kernel, anchor, 5);
+                    //             kernel.delete();
+                    //             resolve(dst);
+                    //         });
+                    //     }
+                    // }))
                     .to(new cv.ImageDisplaySink({
-                        windowTitle: "123",
-                        waitKey: false
+                        windowTitle: "123"
                     }), new core.CallbackSinkNode(frame => {
                         frame.image.delete();
                     }))

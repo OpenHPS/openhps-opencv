@@ -1,4 +1,4 @@
-import { SourceNode, CameraObject } from '@openhps/core';
+import { SourceNode } from '@openhps/core';
 import { VideoFrame, ImageFrame } from '../../../common';
 import { Mat, imread } from 'opencv4nodejs';
 
@@ -25,7 +25,7 @@ export class ImageSource extends SourceNode<ImageFrame> {
     /**
      * Pull the next image frame
      *
-     * @returns {Promise<VideoSource>} Pull promise
+     * @returns {Promise<VideoFrame>} Pull promise
      */
     public onPull(): Promise<VideoFrame> {
         return new Promise<VideoFrame>((resolve) => {

@@ -1,6 +1,6 @@
 import { ProcessingNode } from '@openhps/core';
 import { ImageFrame, ImageFeatureObject, ImageRectShape } from '../../../../common';
-import { CascadeClassifier, Rect } from 'opencv4nodejs';
+import { CascadeClassifier } from 'opencv4nodejs';
 
 /**
  * Classify image features

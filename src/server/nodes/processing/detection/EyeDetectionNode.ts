@@ -16,7 +16,7 @@ export class EyeDetectionNode extends ImageObjectClassifierNode<ImageFeatureObje
     public process(data: ImageFrame): Promise<ImageFrame> {
         return new Promise<ImageFrame>((resolve, reject) => {
             let faceDetected = false;
-            data.imageFeatures.forEach((feature) => {
+            data.imageFeatures.forEach(() => {
                 faceDetected = true;
             });
             if (faceDetected) {

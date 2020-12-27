@@ -15,8 +15,8 @@ export class ColorMaskNode<InOut extends ImageFrame> extends ImageProcessingNode
             const hsv = new Mat();
             (OpenCV as any).cvtColor(image, hsv, OpenCV.COLOR_BGR2HSV);
             const dst = new Mat();
-            const low = (OpenCV as any).matFromArray(hsv.rows, hsv.cols, (hsv as any).type(), this.options.minRange);
-            const high = (OpenCV as any).matFromArray(hsv.rows, hsv.cols, (hsv as any).type(), this.options.maxRange);
+            const low = (OpenCV as any).matFromArray(3, 1, OpenCV.CV_64FC1, this.options.minRange);
+            const high = (OpenCV as any).matFromArray(3, 1, OpenCV.CV_64FC1, this.options.maxRange);
             (OpenCV as any).inRange(hsv, low, high, dst);
             low.delete();
             high.delete();
