@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        OPENCV4NODEJS_DISABLE_AUTOBUILD = 1
+        OPENCV_INCLUDE_DIR  = '/opt/opencv/include/'
+        OPENCV_LIB_DIR      = '/opt/opencv/build/lib/'
+        OPENCV_BIN_DIR      = '/opt/opencv/build/bin/'
+    }
     stages {
         stage('Build') {
             steps {
