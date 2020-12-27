@@ -14,6 +14,7 @@ pipeline {
                 sh 'npm run clean'
                 sh 'npm run build:cjs'
                 sh 'npm run build:esm'
+                sh 'npm run build:webpack'
             }
         }
         stage('Quality') {
