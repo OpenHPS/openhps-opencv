@@ -13,6 +13,8 @@
   "type": "commonjs",
   "types": "./dist/cjs/server/index.d.ts",
   "module": "./dist/esm/server/index.js",
+  "unpkg": "./dist/web/openhps-opencv.min.js",
+  "jsdelivr": "./dist/web/openhps-opencv.min.js",
   "exports": {
     "require": "./dist/cjs/server/index.js",
     "import": "./dist/esm/server/index.js"
