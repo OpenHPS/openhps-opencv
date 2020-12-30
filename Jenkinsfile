@@ -65,7 +65,7 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
-                reportDir: 'docs',
+                reportDir: 'docs/out',
                 reportFiles: '*.*',
                 reportName: "Documentation"
             ])

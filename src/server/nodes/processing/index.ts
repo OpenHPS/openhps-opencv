@@ -9,3 +9,4 @@ export * from './ImageRotationNode';
 export * from './ImageTransformNode';
 export * from './ColorMaskNode';
 export * from './ImageProcessingNode';
+export * from './GaussianBlurNode';
