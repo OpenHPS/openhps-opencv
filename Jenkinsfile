@@ -23,6 +23,12 @@ pipeline {
                 sh 'npm run lint'
             }
         }
+        stage('Test') {
+            steps {
+                echo 'Testing ...'
+                sh 'npm run test:jenkins'
+            }
+        }
         stage('Documentation') {
             steps {
                 echo 'Building Documentation..'

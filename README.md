@@ -25,7 +25,7 @@
 
 This repository contains the OpenCV component for OpenHPS (Open Source Hybrid Positioning System). It uses [opencv4nodejs](https://www.npmjs.com/package/opencv4nodejs) bindings to create abstract image detection and tracking nodes.
 
-OpenHPS is a graph-based data processing positioning framework. It is designed to support many different use cases ranging from simple positioning such as detecting the position of a pawn on a chessboard using RFID, to indoor positioning methods using multiple cameras.
+OpenHPS is a data processing positioning framework. It is designed to support many different use cases ranging from simple positioning such as detecting the position of a pawn on a chessboard using RFID, to indoor positioning methods using multiple cameras.
 
 ## Features
 - Image and video data frames and objects.
