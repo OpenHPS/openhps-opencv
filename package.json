@@ -9,14 +9,14 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/cjs/server/index.js",
-  "types": "./dist/cjs/server/index.d.ts",
-  "module": "./dist/esm/server/index.js",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "module": "./dist/esm/index.js",
   "unpkg": "./dist/web/openhps-opencv.min.js",
   "jsdelivr": "./dist/web/openhps-opencv.min.js",
   "exports": {
-    "require": "./dist/cjs/server/index.js",
-    "import": "./dist/esm/server/index.js"
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js"
   },
   "files": [
     "dist/**/*",
