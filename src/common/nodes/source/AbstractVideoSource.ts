@@ -37,7 +37,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
      * Load video from file, stream, port
      *
      * @param {string} videoSource File path
-     * @returns {VideoSource} Video source instance
+     * @returns {AbstractVideoSource} Video source instance
      */
     public load(videoSource: string | number | Element): this {
         this.videoCapture = new VideoCapture(videoSource as any);
@@ -118,7 +118,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     /**
      * Pull the next frame
      *
-     * @returns {Promise<VideoSource>} Pull promise
+     * @returns {Promise<AbstractVideoSource>} Pull promise
      */
     public onPull(): Promise<VideoFrame> {
         return this._readFrame();
