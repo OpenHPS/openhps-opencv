@@ -1,6 +1,6 @@
 {
   "name": "@openhps/opencv",
-  "version": "0.1.0-alpha.16",
+  "version": "0.1.0-alpha.17",
   "description": "Open Hybrid Positioning System - OpenCV component",
   "repository": {
     "type": "git",
