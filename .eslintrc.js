@@ -19,6 +19,7 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "import/no-cycle": "error",
+        "import/named": "off",
         "import/no-unresolved": "off",
         "prettier/prettier": ["error"],
         "jsdoc/check-tag-names": ["error", { "definedTags": ["category"] }],

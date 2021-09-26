@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Example - OpenHPS Browser</title>
+    </head>
+    <body>
+        <video id="abc" width="320" height="240"></video>
+        <canvas id="123" width="320" height="240"></canvas>
+
+        <script src="https://cdn.jsdelivr.net/npm/@openhps/core@0.2.0-alpha.12"></script>
+        <script src="../../dist/web/openhps-opencv.min.js"></script>
+        <script>
+            // Dependencies
+            const core = window['@openhps/core'];
+            const cv = window['@openhps/opencv'];
+            
+            let model;
+
+            function initWebcam() {
+                navigator.getUserMedia = navigator.getUserMedia ||
+                         navigator.webkitGetUserMedia ||
+                         navigator.mozGetUserMedia;
+
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ audio: true, video: { 
+                            width: 320, 
+                            height: 240,
+                            facingMode: "user"  // Front facing camera
+                        }},
+                        function(stream) {
+                            var video = document.getElementById('abc');
+                            video.srcObject = stream;
+                            video.onloadedmetadata = function(e) {
+                                video.play();
+                                initModel();
+                            };
+                        },
+                        function(err) {
+                            console.error("The following error occurred: " + err.name);
+                        }
+                    );
+                } else {
+                    console.error("getUserMedia not supported");
+                }
+            }
+            let l = [0, 0, 0]
+            let h = [60, 255, 200]
+            function initModel() {
+                core.ModelBuilder.create()
+                    .withLogger(console.log)
+                    .from(new cv.VideoSource({
+                        videoSource: document.getElementById("abc"),
+                        autoPlay: true,
+                        fps: 30,
+                        width: 320, 
+                        height: 240,
+                    }))
+                    .via(new (class X extends cv.ImageProcessingNode {
+                        processImage(image) {
+                            return new Promise(resolve => {
+                                const opencv = cv.OpenCV;
+                                const hsv = new opencv.Mat();
+                                opencv.cvtColor(image, hsv, opencv.COLOR_BGR2HSV);
+                                const mask = new opencv.Mat();
+                                const low = opencv.matFromArray(3, 1, opencv.CV_64FC1, [10, 0, 200]);
+                                const high = opencv.matFromArray(3, 1, opencv.CV_64FC1, [50, 255, 255]);
+                                opencv.inRange(hsv, low, high, mask);
+                                const imageMasked = new opencv.Mat();
+                                opencv.bitwise_and(image, image, imageMasked, mask);
+                                const gray = new opencv.Mat();
+                                opencv.cvtColor(imageMasked, gray, opencv.COLOR_BGR2GRAY);
+                                const blurred = new opencv.Mat();
+                                opencv.GaussianBlur(gray, blurred, new opencv.Size(11, 11), 0);
+                                const thresh = new opencv.Mat();
+                                opencv.threshold(blurred, thresh, 220, 255, opencv.THRESH_BINARY)[1];
+                                blurred.delete();
+                                gray.delete();
+                                hsv.delete();
+                                imageMasked.delete();
+                                mask.delete();
+                                low.delete();
+                                high.delete();
+                                resolve(thresh);
+                            });
+                        }
+                    })())
+                    .via(new cv.ImageErodeNode({
+                        iterations: 2
+                    }))
+                    .via(new cv.ImageDilateNode({
+                        iterations: 4
+                    }))
+                    .to(new cv.ImageDisplaySink({
+                        windowTitle: "123"
+                    }), new core.CallbackSinkNode(frame => {
+                        frame.image.delete();
+                    }))
+                    .build().then(m => {
+                        model = m;
+                    }).catch(console.error);
+            }
+
+            initWebcam();
+        </script>
+    </body>
+</html>
