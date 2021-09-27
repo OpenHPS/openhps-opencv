@@ -1,10 +1,18 @@
 import 'reflect-metadata';
-import { DataFrame, SerializableObject } from '@openhps/core';
+import { DataFrame, SerializableObject, SerializableMember, CameraObject } from '@openhps/core';
 import { ImageFeatureObject } from './object/ImageFeatureObject';
-import { Mat } from 'opencv4nodejs';
+import { imdecode, imencode, Mat } from 'opencv4nodejs';
 
 @SerializableObject()
 export class ImageFrame extends DataFrame {
+    @SerializableMember({
+        serializer: (image: Mat) => {
+            return imencode('.jpg', image);
+        },
+        deserializer: (json: any) => {
+            return imdecode(json);
+        },
+    })
     public image: Mat;
 
     public get imageFeatures(): ImageFeatureObject[] {
@@ -22,11 +30,20 @@ export class ImageFrame extends DataFrame {
     }
 
     /**
-     * Grayscale OpenCV image
+     * Source object clone that captured the data frame
      *
-     * @returns {Mat} OpenCV grayscale image
+     * @returns {CameraObject} Source data object
      */
-    public get imageGrayscale(): Mat {
-        return this.image.bgrToGray();
+    get source(): CameraObject {
+        return this.source;
+    }
+
+    /**
+     * Set the source object clone that captured the data frame
+     *
+     * @param {CameraObject} object Source data object
+     */
+    set source(object: CameraObject) {
+        this.source = object;
     }
 }

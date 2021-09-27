@@ -11,7 +11,7 @@ export class DisparityProcessingNode extends ProcessingNode<StereoImageFrame, Im
     public process(data: StereoImageFrame): Promise<ImageFrame> {
         return new Promise<ImageFrame>((resolve) => {
             const imageFrame = new ImageFrame();
-            imageFrame.source = data.source;
+            imageFrame.source = data.source.leftCamera; // TODO: Recalibrate
             resolve(imageFrame);
         });
     }

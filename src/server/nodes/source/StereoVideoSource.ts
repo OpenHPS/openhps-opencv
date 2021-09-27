@@ -49,7 +49,7 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
     public play(): void {
         const videoPlayback: NodeJS.Timeout = setInterval(() => {
             const videoFrame = new StereoVideoFrame();
-            videoFrame.source = this.source;
+            videoFrame.source = this.source as StereoCameraObject;
             const leftImage: Mat = this._leftVideoCapture.read();
             const rightImage: Mat = this._rightVideoCapture.read();
             if (leftImage.empty || rightImage.empty) {
@@ -69,7 +69,7 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
     public onPull(): Promise<StereoVideoFrame> {
         return new Promise<StereoVideoFrame>((resolve) => {
             const videoFrame = new StereoVideoFrame();
-            videoFrame.source = this.source;
+            videoFrame.source = this.source as StereoCameraObject;
             const leftImage: Mat = this._leftVideoCapture.read();
             const rightImage: Mat = this._rightVideoCapture.read();
             if (leftImage.empty || rightImage.empty) {
