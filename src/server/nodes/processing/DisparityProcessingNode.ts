@@ -1,5 +1,5 @@
 import { ProcessingNode } from '@openhps/core';
-import { ImageFrame, StereoImageFrame } from '../../../common';
+import { ImageFrame, StereoImageFrame, StereoCameraObject } from '../../../common';
 
 export class DisparityProcessingNode extends ProcessingNode<StereoImageFrame, ImageFrame> {
     /**
@@ -11,7 +11,7 @@ export class DisparityProcessingNode extends ProcessingNode<StereoImageFrame, Im
     public process(data: StereoImageFrame): Promise<ImageFrame> {
         return new Promise<ImageFrame>((resolve) => {
             const imageFrame = new ImageFrame();
-            imageFrame.source = data.source.leftCamera; // TODO: Recalibrate
+            imageFrame.source = new StereoCameraObject(data.left.source, data.right.source);
             resolve(imageFrame);
         });
     }

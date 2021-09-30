@@ -1,26 +1,13 @@
-import { DataFrame, SerializableObject, SerializableMember, StereoCameraObject } from '@openhps/core';
-import { imdecode, imencode, Mat } from 'opencv4nodejs';
+import { DataFrame, SerializableObject, SerializableMember } from '@openhps/core';
+import { ImageFrame } from './ImageFrame';
+import { StereoCameraObject } from './object';
 
 @SerializableObject()
 export class StereoImageFrame extends DataFrame {
-    @SerializableMember({
-        serializer: (image: Mat) => {
-            return imencode('.jpg', image);
-        },
-        deserializer: (json: any) => {
-            return imdecode(json);
-        },
-    })
-    public leftImage: Mat;
-    @SerializableMember({
-        serializer: (image: Mat) => {
-            return imencode('.jpg', image);
-        },
-        deserializer: (json: any) => {
-            return imdecode(json);
-        },
-    })
-    public rightImage: Mat;
+    @SerializableMember()
+    public left: ImageFrame;
+    @SerializableMember()
+    public right: ImageFrame;
 
     /**
      * Source object clone that captured the data frame
@@ -28,7 +15,7 @@ export class StereoImageFrame extends DataFrame {
      * @returns {StereoCameraObject} Source data object
      */
     get source(): StereoCameraObject {
-        return this.source;
+        return super.source as StereoCameraObject;
     }
 
     /**
@@ -37,6 +24,6 @@ export class StereoImageFrame extends DataFrame {
      * @param {StereoCameraObject} object Source data object
      */
     set source(object: StereoCameraObject) {
-        this.source = object;
+        super.source = object;
     }
 }

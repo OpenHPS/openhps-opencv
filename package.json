@@ -23,8 +23,8 @@
     "src/**/*"
   ],
   "scripts": {
-    "test": "mocha --experimental-worker",
-    "test:jenkins": "jenkins-mocha --cobertura",
+    "test": "mocha --config test/.mocharc.json",
+    "test:jenkins": "jenkins-mocha --cobertura --config test/.mocharc.json",
     "cover": "nyc mocha && nyc report --reporter=cobertura",
     "lint": "eslint src/**",
     "clean": "shx rm -rf ./dist && shx rm -rf ./docs/out",
@@ -45,11 +45,11 @@
     "opencv4nodejs": ">=5.6.0"
   },
   "peerDependencies": {
-    "@openhps/core": ">=0.3.0-alpha.76",
+    "@openhps/core": ">=0.3.0-alpha.79",
     "reflect-metadata": ">=0.1.13"
   },
   "devDependencies": {
-    "@openhps/core": ">=0.3.0-alpha.76",
+    "@openhps/core": ">=0.3.0-alpha.79",
     "reflect-metadata": ">=0.1.13",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",

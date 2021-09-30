@@ -14,13 +14,13 @@ export class StereoCameraCalibrationNode extends ProcessingNode<StereoImageFrame
             const boardSize = new Size(8, 6);
             const promises = [];
             promises.push(
-                data.leftImage.findChessboardCornersAsync(
+                data.left.image.findChessboardCornersAsync(
                     boardSize,
                     CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE,
                 ),
             );
             promises.push(
-                data.rightImage.findChessboardCornersAsync(
+                data.right.image.findChessboardCornersAsync(
                     boardSize,
                     CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE,
                 ),
@@ -30,14 +30,14 @@ export class StereoCameraCalibrationNode extends ProcessingNode<StereoImageFrame
                 if (values[0].returnValue && values[1].returnValue) {
                     const imageFrame = new StereoImageFrame();
                     imageFrame.source = data.source;
-                    imageFrame.leftImage = data.leftImage;
-                    imageFrame.rightImage = data.rightImage;
+                    imageFrame.left = data.left;
+                    imageFrame.right = data.right;
                     const drawPromises = [];
                     drawPromises.push(
-                        imageFrame.leftImage.drawChessboardCornersAsync(boardSize, values[0].corners, true),
+                        imageFrame.left.image.drawChessboardCornersAsync(boardSize, values[0].corners, true),
                     );
                     drawPromises.push(
-                        imageFrame.rightImage.drawChessboardCornersAsync(boardSize, values[1].corners, true),
+                        imageFrame.right.image.drawChessboardCornersAsync(boardSize, values[1].corners, true),
                     );
 
                     Promise.all(drawPromises)
