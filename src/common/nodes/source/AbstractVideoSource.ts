@@ -1,5 +1,5 @@
 import { SourceNode, SourceNodeOptions } from '@openhps/core';
-import { VideoFrame } from '../../data';
+import { CameraObject, VideoFrame } from '../../data';
 import {
     VideoCapture,
     Mat,
@@ -129,15 +129,15 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     private _readFrame(): Promise<VideoFrame> {
         return new Promise((resolve, reject) => {
             const videoFrame = new VideoFrame();
-            videoFrame.source = this.source;
+            videoFrame.source = this.source as CameraObject;
             videoFrame.fps = this.options.fps;
             this.readFrame()
                 .then((frameImage: Mat) => {
                     if (!frameImage) {
                         return resolve(undefined);
                     }
-                    videoFrame.height = this.options.height || frameImage.sizes[0];
-                    videoFrame.width = this.options.width || frameImage.sizes[1];
+                    videoFrame.rows = this.options.height || frameImage.sizes[0];
+                    videoFrame.cols = this.options.width || frameImage.sizes[1];
                     videoFrame.image = frameImage;
                     videoFrame.fourcc = this.options.fourcc;
                     resolve(videoFrame);

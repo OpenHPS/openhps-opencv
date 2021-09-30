@@ -23,8 +23,8 @@ export class VideoSink<In extends VideoFrame> extends SinkNode<In> {
 
     public onPush(frame: In): Promise<void> {
         return new Promise((resolve, reject) => {
-            const width = this.options.width || frame.width;
-            const height = this.options.height || frame.height;
+            const width = this.options.width || frame.cols;
+            const height = this.options.height || frame.rows;
 
             // Create writer on first frame
             if (!this._writer) {

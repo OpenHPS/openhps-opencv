@@ -10,7 +10,7 @@ describe('video', () => {
             const source = new VideoSource({
                 autoPlay: true,
                 videoSource: "./test/data/data-gaze-1.mp4",
-                fps: -1,
+                fps: 20,
                 throttleRead: true,
                 throttlePush: true
             });
