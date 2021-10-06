@@ -1,4 +1,4 @@
-import { SerializableObject, SerializableMember, DataObject, Vector2, SerializableArrayMember } from '@openhps/core';
+import { SerializableObject, SerializableMember, DataObject, SerializableArrayMember, Matrix3 } from '@openhps/core';
 
 /**
  * Camera source object
@@ -6,28 +6,16 @@ import { SerializableObject, SerializableMember, DataObject, Vector2, Serializab
 @SerializableObject()
 export class CameraObject extends DataObject {
     /**
-     * Number of columns (width)
+     * Width
      */
     @SerializableMember()
-    cols: number;
+    width: number;
 
     /**
-     * Focal length
+     * Height
      */
     @SerializableMember()
-    focalLength: Vector2;
-
-    /**
-     * Principal point
-     */
-    @SerializableMember()
-    principalPoint: Vector2;
-
-    /**
-     * Skew coefficient
-     */
-    @SerializableMember()
-    skewCoefficient: number;
+    height: number;
 
     /**
      * Distortion coefficients
@@ -35,23 +23,19 @@ export class CameraObject extends DataObject {
     @SerializableArrayMember(Number)
     distortionCoefficients: number[];
 
-    /**
-     * Number of rows (height)
-     */
     @SerializableMember()
-    rows: number;
+    cameraMatrix: Matrix3;
 
     /**
-     * Camera model type
+     * Camera frustum aspect ratio.
      */
-    @SerializableMember()
-    type: CameraType;
-}
+    get aspect(): number {
+        return this.width / this.height;
+    }
 
-export enum CameraType {
-    PINHOLE,
-    FISHEYE,
-    PERSPECTIVE,
-    EQUIRECTANGULAR,
-    UNKNOWN,
+    constructor(uid?: string, displayName?: string, width?: number, height?: number) {
+        super(uid, displayName);
+        this.width = width || 0;
+        this.height = height || 0;
+    }
 }

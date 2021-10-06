@@ -8,7 +8,7 @@ export class ImageErodeNode<InOut extends ImageFrame> extends ImageProcessingNod
         super(options);
     }
 
-    public processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
         return new Promise((resolve) => {
             const mat = image.erode(
                 new OpenCV.Mat(),

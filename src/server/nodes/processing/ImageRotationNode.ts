@@ -20,7 +20,7 @@ export class ImageRotationNode<InOut extends ImageFrame> extends ImageProcessing
         super(options);
     }
 
-    public processImage(image: Mat): Promise<Mat> {
+    processImage(image: Mat): Promise<Mat> {
         return new Promise((resolve, reject) => {
             image
                 .rotateAsync(this.options.rotationCode)

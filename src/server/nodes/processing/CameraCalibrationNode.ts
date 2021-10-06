@@ -1,4 +1,4 @@
-import { ProcessingNode, ProcessingNodeOptions } from '@openhps/core';
+import { Matrix3, ProcessingNode, ProcessingNodeOptions } from '@openhps/core';
 import { ImageFrame } from '../../../common';
 import {
     Size,
@@ -12,6 +12,8 @@ import {
     termCriteria,
     Mat,
     CALIB_USE_INTRINSIC_GUESS,
+    initCameraMatrix2DAsync,
+    initCameraMatrix2D,
 } from 'opencv4nodejs';
 
 export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame> {
@@ -27,7 +29,7 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
      * @param {ImageFrame} data Data frame
      * @returns {Promise<ImageFrame>} Image frame processing promise
      */
-    public process(data: ImageFrame): Promise<ImageFrame> {
+    process(data: ImageFrame): Promise<ImageFrame> {
         return new Promise<ImageFrame>((resolve, reject) => {
             const boardSize = new Size(this.options.boardSize[0], this.options.boardSize[1]);
             const criteria = new TermCriteria(termCriteria.EPS | termCriteria.MAX_ITER, 30, 0.001);
@@ -41,7 +43,7 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
 
             let calibrationData: CameraCalibrationData;
             const gray = data.image.bgrToGray();
-            const matrix = new Mat();
+            let matrix: Mat;
             this.getNodeData(data.source, {
                 objectPoints: [],
                 imagePoints: [],
@@ -68,7 +70,7 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                         data.image.drawChessboardCorners(boardSize, corners, true);
                     }
 
-                    if (calibrationData.imagePoints.length > this.options.minFrames) {
+                    if (calibrationData.imagePoints.length >= this.options.minFrames) {
                         const objectPoints: Point3[][] = calibrationData.objectPoints.map((objectPointArray) =>
                             objectPointArray.map((point) => new Point3(point[0], point[1], point[2])),
                         );
@@ -76,10 +78,16 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                             imagePointArray.map((point) => new Point2(point[0], point[1])),
                         );
 
+                        matrix = initCameraMatrix2D(
+                            objectPoints as any,
+                            imagePoints as any,
+                            new Size(data.image.cols, data.image.rows),
+                        );
+
                         return calibrateCameraAsync(
                             objectPoints as any,
                             imagePoints as any,
-                            new Size(data.image.rows, data.image.cols),
+                            new Size(data.image.cols, data.image.rows),
                             matrix,
                             [],
                             CALIB_USE_INTRINSIC_GUESS,
@@ -94,8 +102,15 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                         .catch(reject);
                 })
                 .then((val) => {
+                    if (!val) {
+                        return resolve(data);
+                    }
+
                     // Save calibration data
                     data.source.distortionCoefficients = val.distCoeffs;
+                    data.source.cameraMatrix = Matrix3.fromArray(matrix.getDataAsArray());
+                    calibrationData.imagePoints = [];
+                    calibrationData.objectPoints = [];
                     this.setNodeData(data.source, calibrationData)
                         .then(() => {
                             resolve(data);

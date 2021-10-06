@@ -19,7 +19,7 @@ export class ImageResizeNode<InOut extends ImageFrame> extends ImageProcessingNo
         super(options);
     }
 
-    public processImage(image: Mat): Promise<Mat> {
+    processImage(image: Mat): Promise<Mat> {
         return new Promise((resolve) => {
             // Get the scaling
             let scale = 1.0;

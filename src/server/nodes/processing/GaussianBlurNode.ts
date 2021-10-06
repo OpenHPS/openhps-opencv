@@ -8,7 +8,7 @@ export class GaussianBlurNode<InOut extends ImageFrame> extends ImageProcessingN
         super(options);
     }
 
-    public processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
         return new Promise((resolve, reject) => {
             image
                 .gaussianBlurAsync(new OpenCV.Size(this.options.kernelSize, this.options.kernelSize), 0)

@@ -13,7 +13,7 @@ export class VideoSink<In extends VideoFrame> extends SinkNode<In> {
         this.once('destroy', this._destroyWriter.bind(this));
     }
 
-    public get videoWriter(): VideoWriter {
+    get videoWriter(): VideoWriter {
         return this._writer;
     }
 
@@ -21,7 +21,7 @@ export class VideoSink<In extends VideoFrame> extends SinkNode<In> {
         this._writer.release();
     }
 
-    public onPush(frame: In): Promise<void> {
+    onPush(frame: In): Promise<void> {
         return new Promise((resolve, reject) => {
             const width = this.options.width || frame.cols;
             const height = this.options.height || frame.rows;

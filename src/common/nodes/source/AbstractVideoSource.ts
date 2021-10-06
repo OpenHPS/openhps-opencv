@@ -39,7 +39,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
      * @param {string} videoSource File path
      * @returns {AbstractVideoSource} Video source instance
      */
-    public load(videoSource: string | number | Element): this {
+    load(videoSource: string | number | Element): this {
         this.videoCapture = new VideoCapture(videoSource as any);
         this._srcFPS = this.videoCapture.get(CAP_PROP_FPS);
         this.options.fps = this.options['fps'] === undefined ? this._srcFPS : this.options.fps;
@@ -58,11 +58,11 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
         return this;
     }
 
-    public reset(): void {
+    reset(): void {
         this.videoCapture.reset();
     }
 
-    public release(): void {
+    release(): void {
         this.videoCapture.release();
     }
 
@@ -71,7 +71,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
      *
      * @returns {NodeJS.Timer} Running frame grab timer
      */
-    public play(): NodeJS.Timer {
+    play(): NodeJS.Timer {
         let ready = true;
         this._frame = 0;
         this._timer = setInterval(
@@ -105,13 +105,13 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
         return this._timer;
     }
 
-    public stop(): void {
+    stop(): void {
         if (this._timer) {
             clearInterval(this._timer);
         }
     }
 
-    public get actualFPS(): number {
+    get actualFPS(): number {
         return Math.round((this._frame / ((Date.now() - this._start) / 1000)) * 100) / 100;
     }
 
@@ -120,7 +120,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
      *
      * @returns {Promise<AbstractVideoSource>} Pull promise
      */
-    public onPull(): Promise<VideoFrame> {
+    onPull(): Promise<VideoFrame> {
         return this._readFrame();
     }
 

@@ -1,15 +1,37 @@
 import { SourceNode } from '@openhps/core';
 import { VideoFrame, ImageFrame, CameraObject } from '../../../common';
 import { Mat, imread } from 'opencv4nodejs';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export class ImageSource extends SourceNode<ImageFrame> {
     get source(): CameraObject {
         return super.source as CameraObject;
     }
 
-    public pushImage(file: string): Promise<void>;
-    public pushImage(image: Mat): Promise<void>;
-    public pushImage(image: any): Promise<void> {
+    loadDirectory(directory: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            fs.readdir(directory, (err, files) => {
+                if (err) {
+                    return reject(err);
+                }
+
+                let promise: Promise<void> = Promise.resolve();
+                for (let i = 0; i < files.length; i++) {
+                    promise = promise.then(() => this.pushImage(path.join(directory, files[i])));
+                }
+                promise
+                    .then(() => {
+                        resolve();
+                    })
+                    .catch(reject);
+            });
+        });
+    }
+
+    pushImage(file: string): Promise<void>;
+    pushImage(image: Mat): Promise<void>;
+    pushImage(image: any): Promise<void> {
         return new Promise((resolve, reject) => {
             const imageFrame = new ImageFrame();
             imageFrame.source = this.source;
@@ -19,11 +41,12 @@ export class ImageSource extends SourceNode<ImageFrame> {
                 return reject(new Error());
             }
             imageFrame.image = frameImage;
-            this.push(imageFrame)
+            this.onceCompleted(imageFrame.uid)
                 .then(() => {
                     resolve();
                 })
                 .catch(reject);
+            this.push(imageFrame);
         });
     }
 
@@ -32,7 +55,7 @@ export class ImageSource extends SourceNode<ImageFrame> {
      *
      * @returns {Promise<VideoFrame>} Pull promise
      */
-    public onPull(): Promise<VideoFrame> {
+    onPull(): Promise<VideoFrame> {
         return new Promise<VideoFrame>((resolve) => {
             resolve(undefined);
         });

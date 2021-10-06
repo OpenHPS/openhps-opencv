@@ -1,4 +1,4 @@
-import { VideoSource, FaceDetectionNode, EyeDetectionNode, ImageFrame, ImageDisplaySink } from '../../src';
+import { VideoSource, FaceDetectionNode, EyeDetectionNode, ImageFrame, ImageDisplaySink, ImageFeatureObject } from '../../src';
 import { expect } from 'chai';
 import 'mocha';
 import { SinkNode, TimedPullNode, TimeUnit } from '@openhps/core';
@@ -15,7 +15,7 @@ describe('video', () => {
                 .to(new (class DebugSink extends SinkNode<ImageFrame> {
                     public onPush(data: ImageFrame): Promise<void> {
                         return new Promise((resolve, reject) => {
-                            expect(data.imageFeatures.length).to.equal(3);
+                            expect(data.getObjects(ImageFeatureObject).length).to.equal(3);
                             done();
                             resolve();
                         });

@@ -9,7 +9,7 @@ export class ContourDetectionNode<InOut extends ImageFrame> extends ProcessingNo
         super(options);
     }
 
-    public process(frame: InOut): Promise<InOut> {
+    process(frame: InOut): Promise<InOut> {
         return new Promise((resolve) => {
             if (frame.image) {
                 const contours: Contour[] = frame.image.findContours(

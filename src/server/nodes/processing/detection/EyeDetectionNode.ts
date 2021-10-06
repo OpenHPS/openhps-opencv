@@ -13,10 +13,10 @@ export class EyeDetectionNode extends ImageObjectClassifierNode<ImageFeatureObje
      * @param {ImageFrame} data Data frame
      * @returns {Promise<ImageFrame>} Image frame processing promise
      */
-    public process(data: ImageFrame): Promise<ImageFrame> {
+    process(data: ImageFrame): Promise<ImageFrame> {
         return new Promise<ImageFrame>((resolve, reject) => {
             let faceDetected = false;
-            data.imageFeatures.forEach(() => {
+            data.getObjects(ImageFeatureObject).forEach(() => {
                 faceDetected = true;
             });
             if (faceDetected) {

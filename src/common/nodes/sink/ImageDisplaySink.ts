@@ -22,7 +22,7 @@ export class ImageDisplaySink extends SinkNode<ImageFrame> {
      * @param {ImageFrame} data Input data
      * @returns {Promise<void>} Push promise
      */
-    public onPush(data: ImageFrame): Promise<void> {
+    onPush(data: ImageFrame): Promise<void> {
         return new Promise<void>((resolve) => {
             imshow(this.options.windowTitle, data.image);
             if (this.options.waitKey) {
