@@ -1,5 +1,5 @@
 import { SinkNode, SinkNodeOptions } from '@openhps/core';
-import { ImageFrame } from '../../../common';
+import { ImageFrame } from '@openhps/video';
 import { imshow, waitKey } from 'opencv4nodejs';
 
 /**

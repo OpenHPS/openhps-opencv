@@ -1,5 +1,5 @@
 import { SourceNode, SourceNodeOptions } from '@openhps/core';
-import { PerspectiveCameraObject, StereoCameraObject, StereoVideoFrame, VideoFrame } from '../../../common';
+import { PerspectiveCameraObject, StereoCameraObject, StereoVideoFrame, VideoFrame } from '@openhps/video';
 import { VideoCapture, Mat } from 'opencv4nodejs';
 
 export class StereoVideoSource extends SourceNode<StereoVideoFrame> {

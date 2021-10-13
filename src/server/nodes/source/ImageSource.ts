@@ -1,5 +1,5 @@
 import { SourceNode } from '@openhps/core';
-import { VideoFrame, ImageFrame, CameraObject } from '../../../common';
+import { VideoFrame, ImageFrame, CameraObject } from '@openhps/video';
 import { Mat, imread } from 'opencv4nodejs';
 import * as fs from 'fs';
 import * as path from 'path';

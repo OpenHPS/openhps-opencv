@@ -1,5 +1,5 @@
 import { SourceNode, SourceNodeOptions } from '@openhps/core';
-import { CameraObject, VideoFrame } from '../../data';
+import { CameraObject, VideoFrame } from '@openhps/video';
 import {
     VideoCapture,
     Mat,
