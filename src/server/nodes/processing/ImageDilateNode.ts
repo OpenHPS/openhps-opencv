@@ -8,7 +8,7 @@ export class ImageDilateNode<InOut extends ImageFrame> extends ImageProcessingNo
         super(options);
     }
 
-    public processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
         return new Promise((resolve) => {
             const mat = image.dilate(
                 new OpenCV.Mat(),

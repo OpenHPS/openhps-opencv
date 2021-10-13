@@ -1,13 +1,14 @@
 import { DataFrame, SerializableObject, SerializableMember } from '@openhps/core';
+import { Mat } from 'opencv4nodejs';
 import { ImageFrame } from './ImageFrame';
-import { StereoCameraObject } from './object';
+import { PerspectiveCameraObject, StereoCameraObject } from './object';
 
 @SerializableObject()
-export class StereoImageFrame extends DataFrame {
+export class StereoImageFrame<I = Mat> extends DataFrame {
     @SerializableMember()
-    public left: ImageFrame;
+    left: ImageFrame<I, PerspectiveCameraObject>;
     @SerializableMember()
-    public right: ImageFrame;
+    right: ImageFrame<I, PerspectiveCameraObject>;
 
     /**
      * Source object clone that captured the data frame

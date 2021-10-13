@@ -8,7 +8,7 @@ export abstract class ImageProcessingNode<InOut extends ImageFrame> extends Proc
         super(options);
     }
 
-    public process(frame: InOut): Promise<InOut> {
+    process(frame: InOut): Promise<InOut> {
         return new Promise((resolve, reject) => {
             if (frame.image) {
                 this.processImage(frame.image, frame)

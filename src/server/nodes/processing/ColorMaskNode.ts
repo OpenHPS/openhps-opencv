@@ -8,7 +8,7 @@ export class ColorMaskNode<InOut extends ImageFrame> extends ImageProcessingNode
         super(options);
     }
 
-    public processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
         return new Promise((resolve) => {
             let mat = image.cvtColor(OpenCV.COLOR_BGR2HSV);
             mat = mat.inRange(

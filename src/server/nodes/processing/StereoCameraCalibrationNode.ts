@@ -9,7 +9,7 @@ export class StereoCameraCalibrationNode extends ProcessingNode<StereoImageFrame
      * @param {StereoImageFrame} data Data frame
      * @returns {Promise<StereoImageFrame>} Stereo image frame processing promise
      */
-    public process(data: StereoImageFrame): Promise<StereoImageFrame> {
+    process(data: StereoImageFrame): Promise<StereoImageFrame> {
         return new Promise<StereoImageFrame>((resolve, reject) => {
             const boardSize = new Size(8, 6);
             const promises = [];

@@ -18,7 +18,7 @@ export class ImageTransformNode<InOut extends ImageFrame> extends ImageProcessin
      * @param {Mat} image Image to process and transform
      * @returns {Promise<Mat>} Processed image promise
      */
-    public processImage(image: Mat): Promise<Mat> {
+    processImage(image: Mat): Promise<Mat> {
         return new Promise((resolve, reject) => {
             const tl = this.options.src[0];
             const tr = this.options.src[1];

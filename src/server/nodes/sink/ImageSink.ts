@@ -9,7 +9,7 @@ export class ImageSink<In extends VideoFrame> extends SinkNode<In> {
         super(options);
     }
 
-    public onPush(frame: In): Promise<void> {
+    onPush(frame: In): Promise<void> {
         return new Promise((resolve, reject) => {
             let fileName = this.options.filePath;
             fileName = fileName.replace(/{createdTimestamp}/gi, String(frame.createdTimestamp));

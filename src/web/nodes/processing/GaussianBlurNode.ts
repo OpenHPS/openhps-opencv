@@ -10,7 +10,7 @@ export class GaussianBlurNode<InOut extends ImageFrame> extends ImageProcessingN
         super(options);
     }
 
-    public processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
         return new Promise((resolve) => {
             const dst = new Mat();
             (OpenCV as any).GaussianBlur(

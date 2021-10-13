@@ -8,7 +8,7 @@ export class VideoSource extends AbstractVideoSource {
      * @param {string} videoSource File path
      * @returns {VideoSource} Video source instance
      */
-    public load(videoSource: string | number | Element): this {
+    load(videoSource: string | number | Element): this {
         this.videoCapture = new VideoCapture(videoSource as any);
         return this;
     }

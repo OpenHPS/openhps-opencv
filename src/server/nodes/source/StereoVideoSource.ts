@@ -1,5 +1,5 @@
 import { SourceNode, SourceNodeOptions } from '@openhps/core';
-import { StereoCameraObject, StereoVideoFrame, VideoFrame } from '../../../common';
+import { PerspectiveCameraObject, StereoCameraObject, StereoVideoFrame, VideoFrame } from '../../../common';
 import { VideoCapture, Mat } from 'opencv4nodejs';
 
 export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
@@ -17,7 +17,7 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
      * @param {string} filePathRight Video file for right camera
      * @returns {StereoVideoSource} Stereo video source
      */
-    public fromFiles(filePathLeft: string, filePathRight: string): StereoVideoSource {
+    fromFiles(filePathLeft: string, filePathRight: string): StereoVideoSource {
         this._leftVideoCapture = new VideoCapture(filePathLeft);
         this._rightVideoCapture = new VideoCapture(filePathRight);
         return this;
@@ -30,23 +30,23 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
      * @param {number} portRight COM Port of right camera
      * @returns {StereoVideoSource} Stero video source
      */
-    public fromPorts(portLeft: number, portRight: number): StereoVideoSource {
+    fromPorts(portLeft: number, portRight: number): StereoVideoSource {
         this._leftVideoCapture = new VideoCapture(portLeft);
         this._rightVideoCapture = new VideoCapture(portRight);
         return this;
     }
 
-    public reset(): void {
+    reset(): void {
         this._leftVideoCapture.reset();
         this._rightVideoCapture.reset();
     }
 
-    public release(): void {
+    release(): void {
         this._leftVideoCapture.release();
         this._rightVideoCapture.release();
     }
 
-    public play(): void {
+    play(): void {
         const videoPlayback: NodeJS.Timeout = setInterval(() => {
             this._fetchFrame().then((frame) => {
                 if (!frame) {
@@ -66,12 +66,12 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
             if (leftImage.empty || rightImage.empty) {
                 return resolve(undefined);
             }
-            const leftFrame = new VideoFrame();
+            const leftFrame = new VideoFrame<Mat, PerspectiveCameraObject>();
             leftFrame.rows = leftImage.sizes[0];
             leftFrame.cols = leftImage.sizes[1];
             leftFrame.image = leftImage;
 
-            const rightFrame = new VideoFrame();
+            const rightFrame = new VideoFrame<Mat, PerspectiveCameraObject>();
             rightFrame.rows = rightImage.sizes[0];
             rightFrame.cols = rightImage.sizes[1];
             rightFrame.image = rightImage;
@@ -87,7 +87,7 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
      *
      * @returns {Promise<StereoVideoSource>} Pull promise
      */
-    public onPull(): Promise<StereoVideoFrame> {
+    onPull(): Promise<StereoVideoFrame> {
         return this._fetchFrame();
     }
 }

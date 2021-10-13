@@ -1,6 +1,6 @@
 {
   "name": "@openhps/opencv",
-  "version": "0.1.0-alpha.19",
+  "version": "0.1.0-alpha.20",
   "description": "Open Hybrid Positioning System - OpenCV component",
   "repository": {
     "type": "git",
@@ -45,11 +45,11 @@
     "opencv4nodejs": ">=5.6.0"
   },
   "peerDependencies": {
-    "@openhps/core": ">=0.3.0-alpha.79",
+    "@openhps/core": ">=0.3.0-alpha.80",
     "reflect-metadata": ">=0.1.13"
   },
   "devDependencies": {
-    "@openhps/core": ">=0.3.0-alpha.79",
+    "@openhps/core": ">=0.3.0-alpha.80",
     "reflect-metadata": ">=0.1.13",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
