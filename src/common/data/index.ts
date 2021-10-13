@@ -1,7 +1,7 @@
 import { imdecode, imencode, Mat } from 'opencv4nodejs';
-import { TypedJSON } from 'typedjson';
+import { DataSerializer } from '@openhps/core';
 
-TypedJSON.mapType(Mat, {
+DataSerializer.registerType(Mat, {
     serializer: (image: Mat) => {
         if (!image) {
             return undefined;
@@ -17,10 +17,4 @@ TypedJSON.mapType(Mat, {
 });
 
 export * from './features';
-export * from './object';
-export * from './VideoFrame';
-export * from './ImageFrame';
-export * from './StereoImageFrame';
-export * from './StereoVideoFrame';
-export * from './DepthImageFrame';
-export * from './DepthVideoFrame';
+export * from '@openhps/video';
