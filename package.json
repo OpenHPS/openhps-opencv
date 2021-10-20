@@ -29,6 +29,7 @@
     "cover:docker": "docker-compose run --entrypoint \"./scripts/docker-cover.sh\" app",
     "lint": "eslint src/**",
     "clean": "shx rm -rf ./dist && shx rm -rf ./docs/out",
+    "build:docker": "docker-compose run --entrypoint \"./scripts/docker-build.sh\" app",
     "build": "npm run clean && npm-run-all --parallel build:esm build:cjs build:typedoc && npm run build:webpack",
     "build:esm": "tsc --module es2015 --outDir dist/esm",
     "build:cjs": "tsc --module commonjs  --outDir dist/cjs",
