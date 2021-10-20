@@ -21,7 +21,7 @@ jobs:
           npm run build:docker
       - name: Quality
         run: |
-          npm run lint
+          npm run lint:docker
       - name: Test
         run: |
           npm run test:docker
