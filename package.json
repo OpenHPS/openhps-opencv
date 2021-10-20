@@ -24,11 +24,10 @@
   ],
   "scripts": {
     "test": "mocha --config test/.mocharc.json",
-    "test:docker": "docker-compose run --entrypoint \"./scripts/docker-test.sh\" app",
+    "test:docker": "docker-compose run --entrypoint \"npm run test -- --reporter mocha-junit-reporter\" app",
     "cover": "nyc mocha --config test/.mocharc.json && nyc report --reporter=cobertura",
-    "cover:docker": "docker-compose run --entrypoint \"./scripts/docker-cover.sh\" app",
+    "cover:docker": "docker-compose run --entrypoint \"npm run cover\" app",
     "lint": "eslint src/**",
-    "lint:docker": "docker-compose run --entrypoint \"./scripts/docker-quality.sh\" app",
     "clean": "shx rm -rf ./dist && shx rm -rf ./docs/out",
     "build:docker": "docker-compose run --entrypoint \"./scripts/docker-build.sh\" app",
     "build": "npm run clean && npm-run-all --parallel build:esm build:cjs build:typedoc && npm run build:webpack",
