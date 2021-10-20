@@ -5,3 +5,4 @@ coverage/
 artifacts/
 .nyc_output/
 test/data/output.mp4
+test-results.xml

@@ -5,3 +5,4 @@ services:
     user: $UID:$GID
     volumes:
     - ./:/opt/app
+    - /opt/app/node_modules

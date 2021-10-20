@@ -3,17 +3,17 @@
   @openhps/opencv
 </h1>
 <p align="center">
-    <a href="https://ci.mvdw-software.com/job/openhps-opencv/" target="_blank">
-        <img alt="Build Status" src="https://ci.mvdw-software.com/job/openhps-opencv/job/dev/badge/icon">
+    <a href="https://github.com/OpenHPS/openhps-opencv/actions/workflows/main.yml" target="_blank">
+        <img alt="Build Status" src="https://github.com/OpenHPS/openhps-opencv/actions/workflows/main.yml/badge.svg">
     </a>
-    <a href="https://ci.mvdw-software.com/view/OpenHPS/job/openhps-opencv/job/dev/lastCompletedBuild/testReport" target="_blank">
-        <img alt="Tests" src="https://img.shields.io/jenkins/tests?compact_message&jobUrl=https%3A%2F%2Fci.mvdw-software.com%2Fview%2FOpenHPS%2Fjob%2Fopenhps-opencv%2Fjob%2Fdev">
-    </a>
-    <a href="https://ci.mvdw-software.com/view/OpenHPS/job/openhps-opencv/job/dev/lastCompletedBuild/cobertura/" target="_blank">
-        <img alt="Code coverage" src="https://img.shields.io/jenkins/coverage/cobertura?jobUrl=https%3A%2F%2Fci.mvdw-software.com%2Fview%2FOpenHPS%2Fjob%2Fopenhps-opencv%2Fjob%2Fdev%2F">
+    <a href="https://codecov.io/gh/OpenHPS/openhps-opencv">
+        <img src="https://codecov.io/gh/OpenHPS/openhps-opencv/branch/master/graph/badge.svg"/>
     </a>
     <a href="https://codeclimate.com/github/OpenHPS/openhps-opencv/" target="_blank">
         <img alt="Maintainability" src="https://img.shields.io/codeclimate/maintainability/OpenHPS/openhps-opencv">
+    </a>
+    <a href="https://badge.fury.io/js/@openhps%2Fopencv">
+        <img src="https://badge.fury.io/js/@openhps%2Fopencv.svg" alt="npm version" height="18">
     </a>
 </p>
 
@@ -37,9 +37,6 @@ If you have [npm installed](https://www.npmjs.com/get-npm), start using @openhps
 ```bash
 npm install @openhps/opencv --save
 ```
-
-### Usage
-
 
 ## Contributors
 The framework is open source and is mainly developed by PhD Student Maxim Van de Wynckel as part of his research towards *Hybrid Positioning and Implicit Human-Computer Interaction* under the supervision of Prof. Dr. Beat Signer.
