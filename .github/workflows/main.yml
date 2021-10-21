@@ -14,18 +14,19 @@ jobs:
       - uses: actions/checkout@v2
       - name: Create docker container
         run: |
-          chmod -R 775 ./scripts/*
           docker-compose build
+          docker-compose up -d
       - name: Build
         run: |
-          npm run build:docker
+          docker-compose exec app npm install
+          docker-compose exec app npm run build
       - name: Quality
         run: |
           npm run lint
       - name: Test
         run: |
-          npm run test:docker
-          npm run cover:docker
+          docker-compose exec app npm run test -- --reporter mocha-junit-reporter
+          docker-compose exec app npm run cover
       - name: Publish Documentation
         uses: actions/upload-artifact@v2
         with:
@@ -63,3 +64,7 @@ jobs:
         if: success()
         run: |
           git push
+      - name: Destroy docker container
+        if: always()
+        run: |
+          docker-compose down

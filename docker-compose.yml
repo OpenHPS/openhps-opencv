@@ -3,5 +3,7 @@ services:
   app:
     build: .
     user: $UID:$GID
+    tty: true
     volumes:
     - ./:/opt/app
+    - /opt/app/node_modules
