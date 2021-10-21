@@ -4,6 +4,7 @@ services:
     build: .
     user: $UID:$GID
     tty: true
+    stdin_open: true
     volumes:
     - ./:/opt/app
     - /opt/app/node_modules
