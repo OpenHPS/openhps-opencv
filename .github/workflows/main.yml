@@ -16,13 +16,14 @@ jobs:
         run: |
           docker-compose build
           docker-compose up -d
+          export COMPOSE_INTERACTIVE_NO_CLI=1
       - name: Build
         run: |
           docker-compose exec app npm install
           docker-compose exec app npm run build
       - name: Quality
         run: |
-          npm run lint
+          docker-compose exec app npm run lint
       - name: Test
         run: |
           docker-compose exec app npm run test -- --reporter mocha-junit-reporter
