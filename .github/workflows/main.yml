@@ -10,24 +10,21 @@ on:
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
+    container:
+      image: maximvdw/opencv-nodejs:node14-opencv4.2.0-contrib
     steps:
       - uses: actions/checkout@v2
-      - name: Create docker container
-        run: |
-          docker-compose build
-          docker-compose up -d
-          export COMPOSE_INTERACTIVE_NO_CLI=1
       - name: Build
         run: |
-          docker-compose exec app npm install
-          docker-compose exec app npm run build
+          npm install
+          npm run build
       - name: Quality
         run: |
-          docker-compose exec app npm run lint
+          npm run lint
       - name: Test
         run: |
-          docker-compose exec app npm run test -- --reporter mocha-junit-reporter
-          docker-compose exec app npm run cover
+          npm run test -- --reporter mocha-junit-reporter
+          npm run cover
       - name: Publish Documentation
         uses: actions/upload-artifact@v2
         with:
@@ -65,7 +62,3 @@ jobs:
         if: success()
         run: |
           git push
-      - name: Destroy docker container
-        if: always()
-        run: |
-          docker-compose down
