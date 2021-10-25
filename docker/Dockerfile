@@ -37,6 +37,12 @@ RUN set -x && \
   apt-get autoremove -y -qq && \
   rm -rf /var/lib/apt/lists/*
 
+ENV CPATH=${CMAKE_INSTALL_PREFIX}/include:${CPATH}
+ENV C_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include:${C_INCLUDE_PATH}
+ENV CPLUS_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include:${CPLUS_INCLUDE_PATH}
+ENV LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${LIBRARY_PATH}
+ENV LD_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
+
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x | bash && \
   apt-get install -y nodejs && node -v && npm -v
@@ -44,11 +50,32 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x | bash &
 ARG CMAKE_INSTALL_PREFIX=/usr/local
 ARG NUM_THREADS=7
 
+# Eigen
+ARG EIGEN3_VERSION=3.3.7
+WORKDIR /tmp
+RUN set -x && \
+  wget -q https://gitlab.com/cantonios/eigen/-/archive/${EIGEN3_VERSION}/eigen-${EIGEN3_VERSION}.tar.bz2 && \
+  tar xf eigen-${EIGEN3_VERSION}.tar.bz2 && \
+  rm -rf eigen-${EIGEN3_VERSION}.tar.bz2 && \
+  cd eigen-${EIGEN3_VERSION} && \
+  mkdir -p build && \
+  cd build && \
+  cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
+    .. && \
+  make -j${NUM_THREADS} && \
+  make install && \
+  cd /tmp && \
+  rm -rf *
+ENV Eigen3_DIR=${CMAKE_INSTALL_PREFIX}/share/eigen3/cmake
+
+# OpenCV
 WORKDIR /opt
 RUN set -x && \
-  wget -O opencv_${OPENCV_VERSION}.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
-  unzip -q opencv_${OPENCV_VERSION}.zip && \
-  rm -rf opencv_${OPENCV_VERSION}.zip && \
+  wget -q https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+  unzip -q ${OPENCV_VERSION}.zip && \
+  rm -rf ${OPENCV_VERSION}.zip && \
   if [ -n "$WITH_CONTRIB" ]; then \
     wget -O opencv_contrib_${OPENCV_VERSION}.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip; \
     unzip -q opencv_contrib_${OPENCV_VERSION}.zip; \
@@ -57,58 +84,38 @@ RUN set -x && \
   cd opencv-${OPENCV_VERSION} && \
   mkdir -p build && \
   cd build && \
-  cmake_flags="-D CMAKE_BUILD_TYPE=RELEASE \
-  -D BUILD_EXAMPLES=OFF \
-  -D BUILD_DOCS=OFF \
-  -D BUILD_TESTS=OFF \
-  -D BUILD_PERF_TESTS=OFF \
-  -D BUILD_JAVA=OFF \
-  -D BUILD_opencv_apps=OFF \
-  -D BUILD_opencv_aruco=OFF \
-  -D BUILD_opencv_bgsegm=OFF \
-  -D BUILD_opencv_bioinspired=OFF \
-  -D BUILD_opencv_ccalib=OFF \
-  -D BUILD_opencv_datasets=OFF \
-  -D BUILD_opencv_dnn_objdetect=OFF \
-  -D BUILD_opencv_dpm=OFF \
-  -D BUILD_opencv_fuzzy=OFF \
-  -D BUILD_opencv_hfs=OFF \
-  -D BUILD_opencv_java_bindings_generator=OFF \
-  -D BUILD_opencv_js=OFF \
-  -D BUILD_opencv_img_hash=OFF \
-  -D BUILD_opencv_line_descriptor=OFF \
-  -D BUILD_opencv_optflow=OFF \
-  -D BUILD_opencv_phase_unwrapping=OFF \
-  -D BUILD_opencv_python3=OFF \
-  -D BUILD_opencv_python_bindings_generator=OFF \
-  -D BUILD_opencv_reg=OFF \
-  -D BUILD_opencv_rgbd=OFF \
-  -D BUILD_opencv_saliency=OFF \
-  -D BUILD_opencv_shape=OFF \
-  -D BUILD_opencv_stereo=OFF \
-  -D BUILD_opencv_stitching=OFF \
-  -D BUILD_opencv_structured_light=OFF \
-  -D BUILD_opencv_superres=OFF \
-  -D BUILD_opencv_surface_matching=OFF \
-  -D BUILD_opencv_ts=OFF \
-  -D BUILD_opencv_xobjdetect=OFF \
-  -D BUILD_opencv_xphoto=OFF \
-  -D CMAKE_INSTALL_PREFIX=/usr/local" && \
+  cmake_flags="-DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
+    -DBUILD_DOCS=OFF \
+    -DBUILD_EXAMPLES=OFF \
+    -DBUILD_JASPER=OFF \
+    -DBUILD_OPENEXR=OFF \
+    -DBUILD_PERF_TESTS=OFF \
+    -DBUILD_TESTS=OFF \
+    -DBUILD_opencv_apps=OFF \
+    -DBUILD_opencv_dnn=OFF \
+    -DBUILD_opencv_ml=OFF \
+    -DBUILD_opencv_python_bindings_generator=OFF \
+    -DENABLE_CXX11=ON \
+    -DENABLE_FAST_MATH=ON \
+    -DWITH_EIGEN=ON \
+    -DWITH_FFMPEG=ON \
+    -DWITH_OPENMP=ON \
+    -DWITH_TBB=ON \
+    -DWITH_V4L=ON \
+    -DWITH_QT=OFF \
+    -DWITH_OPENGL=ON \
+    -DWITH_GSTREAMER=ON \
+    -DOPENCV_GENERATE_PKGCONFIG=ON \
+    -DOPENCV_ENABLE_NONFREE=ON" && \
   if [ -n "$WITH_CONTRIB" ]; then \
-    cmake_flags="$cmake_flags -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules"; \
+      cmake_flags="$cmake_flags -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules"; \
   fi && \
-  echo $cmake_flags && \
   cmake $cmake_flags .. && \
   make -j${NUM_THREADS} && \
   make install
-ENV OpenCV_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/opencv4
-
-ENV CPATH=${CMAKE_INSTALL_PREFIX}/include:${CPATH}
-ENV C_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include:${C_INCLUDE_PATH}
-ENV CPLUS_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include:${CPLUS_INCLUDE_PATH}
-ENV LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${LIBRARY_PATH}
-ENV LD_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
+ENV OpenCV_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/opencv
 
 ENV OPENCV4NODEJS_DISABLE_AUTOBUILD=1
-ENV OPENCV_INCLUDE_DIR /usr/local/include/opencv4/
-ENV OPENCV_LIB_DIR /opt/opencv-${OPENCV_VERSION}/build/lib/
+ENV OPENCV_INCLUDE_DIR=/usr/local/include/
+ENV OPENCV_LIB_DIR=/opt/opencv-${OPENCV_VERSION}/build/lib/

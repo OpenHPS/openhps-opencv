@@ -11,7 +11,7 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     container:
-      image: maximvdw/opencv-nodejs:node14-opencv3.4.15-contrib
+      image: maximvdw/opencv-nodejs:node14-opencv3.4.15
     steps:
       - uses: actions/checkout@v2
       - name: Build

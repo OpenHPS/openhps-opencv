@@ -8,3 +8,4 @@ fi;
 image=maximvdw/opencv-nodejs:$tag
 echo building $image
 docker build -t $image --build-arg OPENCV_VERSION=$1 --build-arg WITH_CONTRIB=$with_contrib --build-arg NODEJS_MAJOR_VERSION=$3 .
+sleep 5
