@@ -52,6 +52,8 @@ jobs:
       - name: Bump version release
         if: github.ref == 'refs/heads/master'
         run: |
+          ls -lah
+          [ -d .git ] && echo .git || git rev-parse --git-dir > /dev/null 2>&1
           npm run bump:release
       - name: Publish to NPM
         uses: JS-DevTools/npm-publish@v1
