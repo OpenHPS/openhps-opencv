@@ -13,6 +13,13 @@ jobs:
     container:
       image: maximvdw/opencv-nodejs:node14-opencv3.4.15
     steps:
+      - name: Force Install GIT latest
+        run: |
+          apt-get install -y software-properties-common \
+          && apt-get update \
+          && add-apt-repository -y ppa:git-core/ppa \
+          && apt-get update \
+          && apt-get install -y git
       - uses: actions/checkout@v2
       - name: Build
         run: |
@@ -52,8 +59,6 @@ jobs:
       - name: Bump version release
         if: github.ref == 'refs/heads/master'
         run: |
-          ls -lah
-          [ -d .git ] && echo .git || git rev-parse --git-dir > /dev/null 2>&1
           npm run bump:release
       - name: Publish to NPM
         uses: JS-DevTools/npm-publish@v1
