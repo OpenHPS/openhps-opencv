@@ -62,6 +62,7 @@ jobs:
       - name: Bump version release
         if: github.ref == 'refs/heads/master'
         run: |
+          git config --global --add safe.directory /__w/openhps-opencv/openhps-opencv
           npm run bump:release
       - name: Publish to NPM (master)
         uses: JS-DevTools/npm-publish@v1
