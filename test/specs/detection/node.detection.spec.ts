@@ -1,7 +1,7 @@
 import 'mocha';
 import { ImageFrame, OpenCV as cv, ImageResizeNode, ImageSource } from '../../../src';
 import { ModelBuilder, CallbackSinkNode, ProcessingNode } from '@openhps/core';
-import { imshow, imshowWait, ROTATE_90_CLOCKWISE } from 'opencv4nodejs';
+import { ROTATE_90_CLOCKWISE } from '@u4/opencv4nodejs';
 import { expect } from 'chai';
 
 describe('node processing', () => {

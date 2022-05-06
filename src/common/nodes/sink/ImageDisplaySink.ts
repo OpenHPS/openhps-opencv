@@ -1,6 +1,6 @@
 import { SinkNode, SinkNodeOptions } from '@openhps/core';
 import { ImageFrame } from '@openhps/video';
-import { imshow, waitKey } from 'opencv4nodejs';
+import { imshow, waitKey } from '@u4/opencv4nodejs';
 
 /**
  * OpenCV Image Display Sink

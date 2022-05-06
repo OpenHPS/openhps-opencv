@@ -1,6 +1,12 @@
 import { ProcessingNode } from '@openhps/core';
 import { StereoImageFrame } from '../../../common';
-import { Size, CALIB_CB_ADAPTIVE_THRESH, CALIB_CB_FAST_CHECK, CALIB_CB_NORMALIZE_IMAGE, Point2 } from 'opencv4nodejs';
+import {
+    Size,
+    CALIB_CB_ADAPTIVE_THRESH,
+    CALIB_CB_FAST_CHECK,
+    CALIB_CB_NORMALIZE_IMAGE,
+    Point2,
+} from '@u4/opencv4nodejs';
 
 export class StereoCameraCalibrationNode extends ProcessingNode<StereoImageFrame, StereoImageFrame> {
     /**

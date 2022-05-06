@@ -1,6 +1,6 @@
 import { ImageFrame } from '../../../common';
-import { Mat } from 'opencv4nodejs';
-import * as OpenCV from 'opencv4nodejs';
+import { Mat } from '@u4/opencv4nodejs';
+import * as OpenCV from '@u4/opencv4nodejs';
 import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
 
 /**

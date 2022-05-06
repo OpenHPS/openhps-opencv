@@ -1,5 +1,5 @@
 import { ImageObjectClassifierNode } from './ImageObjectClassifierNode';
-import { CascadeClassifier, HAAR_FRONTALFACE_DEFAULT } from 'opencv4nodejs';
+import { CascadeClassifier, HAAR_FRONTALFACE_DEFAULT } from '@u4/opencv4nodejs';
 import { ImageFeatureObject } from '../../../../common';
 
 export class FaceDetectionNode extends ImageObjectClassifierNode<ImageFeatureObject> {

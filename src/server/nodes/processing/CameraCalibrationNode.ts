@@ -12,9 +12,8 @@ import {
     termCriteria,
     Mat,
     CALIB_USE_INTRINSIC_GUESS,
-    initCameraMatrix2DAsync,
     initCameraMatrix2D,
-} from 'opencv4nodejs';
+} from '@u4/opencv4nodejs';
 
 export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame> {
     protected options: CameraCalibrationOptions;

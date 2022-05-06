@@ -1,4 +1,4 @@
-import { VideoSource, FaceDetectionNode, EyeDetectionNode, ImageFrame, ImageDisplaySink, ImageFeatureObject } from '../../src';
+import { VideoSource, FaceDetectionNode, EyeDetectionNode, ImageFrame, ImageFeatureObject } from '../../src';
 import { expect } from 'chai';
 import 'mocha';
 import { SinkNode, TimedPullNode, TimeUnit } from '@openhps/core';

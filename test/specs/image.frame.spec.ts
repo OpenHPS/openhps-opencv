@@ -1,7 +1,7 @@
 import { DataSerializer } from '@openhps/core';
 import { expect } from 'chai';
 import 'mocha';
-import { imread } from 'opencv4nodejs';
+import { imread } from '@u4/opencv4nodejs';
 import { ImageFrame } from '../../src';
 
 describe('image', () => {

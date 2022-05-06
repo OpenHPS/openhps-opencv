@@ -1,5 +1,5 @@
 import { ImageObjectClassifierNode } from './ImageObjectClassifierNode';
-import { HAAR_EYE, CascadeClassifier } from 'opencv4nodejs';
+import { HAAR_EYE, CascadeClassifier } from '@u4/opencv4nodejs';
 import { ImageFeatureObject, ImageFrame } from '../../../../common';
 
 export class EyeDetectionNode extends ImageObjectClassifierNode<ImageFeatureObject> {

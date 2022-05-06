@@ -1,3 +1,3 @@
 export * from './data';
 export * from './nodes';
-export * as OpenCV from 'opencv4nodejs';
+export * as OpenCV from '@u4/opencv4nodejs';

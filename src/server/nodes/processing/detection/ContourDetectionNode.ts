@@ -1,6 +1,6 @@
 import { ImageFrame } from '../../../../common';
 import { ProcessingNode, ProcessingNodeOptions } from '@openhps/core';
-import { RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Contour } from 'opencv4nodejs';
+import { RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Contour } from '@u4/opencv4nodejs';
 
 export class ContourDetectionNode<InOut extends ImageFrame> extends ProcessingNode<InOut, InOut> {
     protected options: ContourDetectionOptions;

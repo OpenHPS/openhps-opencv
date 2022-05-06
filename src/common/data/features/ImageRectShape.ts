@@ -1,4 +1,4 @@
-import { Rect } from 'opencv4nodejs';
+import { Rect } from '@u4/opencv4nodejs';
 import { AbsolutePosition, SerializableObject } from '@openhps/core';
 
 @SerializableObject()

@@ -7,7 +7,7 @@ import {
     CAP_PROP_FOURCC,
     CAP_PROP_BRIGHTNESS,
     CAP_PROP_CONTRAST,
-} from 'opencv4nodejs';
+} from '@u4/opencv4nodejs';
 
 export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     public videoCapture: VideoCapture;

@@ -1,8 +1,7 @@
-import { CallbackSinkNode, DataSerializer, ModelBuilder } from '@openhps/core';
+import { CallbackSinkNode, ModelBuilder } from '@openhps/core';
 import { expect } from 'chai';
 import 'mocha';
-import { imread, imshow, imshowWait } from 'opencv4nodejs';
-import { CameraCalibrationNode, CameraObject, ImageFrame, ImageResizeNode, ImageSource, VideoSource } from '../../src';
+import { CameraCalibrationNode, CameraObject, ImageFrame, ImageResizeNode, ImageSource } from '../../src';
 
 describe('video', () => {
     describe('calibration', () => {

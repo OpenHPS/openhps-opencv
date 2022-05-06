@@ -1,5 +1,4 @@
 import { VideoSource, ImageFrame, ImageDisplaySink, OpenCV } from '../../src';
-
 import { expect } from 'chai';
 import 'mocha';
 import { ModelBuilder, SinkNode, TimedPullNode, TimeUnit, CallbackSinkNode } from '@openhps/core';

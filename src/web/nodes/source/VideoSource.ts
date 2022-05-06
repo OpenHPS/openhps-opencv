@@ -1,4 +1,4 @@
-import { CV_8UC4, Mat, VideoCapture } from 'opencv4nodejs';
+import { CV_8UC4, Mat, VideoCapture } from '@u4/opencv4nodejs';
 import { AbstractVideoSource } from '../../../common/nodes';
 
 export class VideoSource extends AbstractVideoSource {

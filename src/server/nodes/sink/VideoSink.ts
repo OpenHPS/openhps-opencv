@@ -1,6 +1,6 @@
 import { VideoFrame } from '../../../common';
 import { SinkNode, SinkNodeOptions } from '@openhps/core';
-import { VideoWriter, Size } from 'opencv4nodejs';
+import { VideoWriter, Size } from '@u4/opencv4nodejs';
 import * as fs from 'fs';
 
 export class VideoSink<In extends VideoFrame> extends SinkNode<In> {

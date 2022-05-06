@@ -1,5 +1,4 @@
 import { ProcessingNode } from '@openhps/core';
-import { Mat } from 'opencv4nodejs';
 import { ImageFrame, StereoImageFrame, StereoCameraObject } from '../../../common';
 
 export class DisparityProcessingNode extends ProcessingNode<StereoImageFrame, ImageFrame> {

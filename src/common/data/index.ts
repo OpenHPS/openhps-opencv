@@ -1,4 +1,4 @@
-import { imdecode, imencode, Mat } from 'opencv4nodejs';
+import { imdecode, imencode, Mat } from '@u4/opencv4nodejs';
 import { DataSerializer } from '@openhps/core';
 
 DataSerializer.registerType(Mat, {

@@ -1,6 +1,6 @@
 import { VideoFrame } from '../../../common';
 import { SinkNode, SinkNodeOptions } from '@openhps/core';
-import { imwriteAsync } from 'opencv4nodejs';
+import { imwriteAsync } from '@u4/opencv4nodejs';
 
 export class ImageSink<In extends VideoFrame> extends SinkNode<In> {
     protected options: ImageSinkOptions;

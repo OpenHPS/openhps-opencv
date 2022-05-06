@@ -1,6 +1,6 @@
 import { ImageFrame } from '../../../common';
-import { Mat, Point2, Size } from 'opencv4nodejs';
-import * as cv from 'opencv4nodejs';
+import { Mat, Point2, Size } from '@u4/opencv4nodejs';
+import * as cv from '@u4/opencv4nodejs';
 import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
 
 export class ImageTransformNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {

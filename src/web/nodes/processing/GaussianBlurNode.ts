@@ -1,4 +1,4 @@
-import { Mat } from 'opencv4nodejs';
+import { Mat } from '@u4/opencv4nodejs';
 import { ImageFrame, OpenCV } from '../../../common';
 import { GaussianBlurOptions } from '../../../server';
 import { ImageProcessingNode } from './ImageProcessingNode';

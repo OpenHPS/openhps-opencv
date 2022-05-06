@@ -25,13 +25,16 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: Quality
+      - name: Build Documentation
         run: |
-          npm run lint
-      - name: Test
-        run: |
-          npm run test -- --reporter mocha-junit-reporter
-          npm run cover
+          npm run build:typedoc
+      - name: Publish Web Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: web
+          path: |
+            dist/web/*
+            !dist/web/*.txt
       - name: Publish Documentation
         uses: actions/upload-artifact@v2
         with:
@@ -60,11 +63,24 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           npm run bump:release
-      - name: Publish to NPM
+      - name: Publish to NPM (master)
         uses: JS-DevTools/npm-publish@v1
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/master'
         with:
           token: ${{ secrets.NPM_TOKEN }}
+          tag: latest
+      - name: Publish to NPM (dev)
+        uses: JS-DevTools/npm-publish@v1
+        if: github.ref == 'refs/heads/dev'
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          tag: dev
+      - name: Deploy site to GitHub
+        if: github.ref == 'refs/heads/master' && success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/out
       - name: Publish to GitHub
         if: success()
         run: |

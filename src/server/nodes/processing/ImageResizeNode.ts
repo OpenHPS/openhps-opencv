@@ -1,5 +1,5 @@
 import { ImageFrame } from '../../../common';
-import { INTER_CUBIC, Mat } from 'opencv4nodejs';
+import { INTER_CUBIC, Mat } from '@u4/opencv4nodejs';
 import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
 
 /**
