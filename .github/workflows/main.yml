@@ -7,15 +7,12 @@ on:
     branches: [ master, dev ]
   workflow_dispatch:
 
-env:
-  container: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
-
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     container:
-      image: ${{ container }}
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -49,7 +46,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: ${{ container }}
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -67,7 +64,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: ${{ container }}
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -98,7 +95,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: ${{ container }}
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -130,7 +127,7 @@ jobs:
       - quality
     runs-on: ubuntu-latest
     container:
-      image: ${{ container }}
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
     steps:
       - uses: actions/checkout@v3
       - name: Load document cache
@@ -157,7 +154,7 @@ jobs:
     needs: test_coverage
     runs-on: ubuntu-latest
     container:
-      image: ${{ container }}
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
     steps:
       - uses: actions/checkout@v3
       - name: Load test and coverage cache
@@ -186,7 +183,7 @@ jobs:
       - test_coverage
     runs-on: ubuntu-latest
     container:
-      image: ${{ container }}
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
     if: github.ref == 'refs/heads/dev'
     steps:
       - uses: actions/checkout@v3
@@ -227,7 +224,7 @@ jobs:
       - test_coverage
     runs-on: ubuntu-latest
     container:
-      image: ${{ container }}
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
