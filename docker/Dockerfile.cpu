@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ARG WITH_CONTRIB
 ARG NUM_THREADS
 ARG CMAKE_INSTALL_PREFIX=/usr/local
-ARG EIGEN3_VERSION=3.3.7
+ARG EIGEN3_VERSION=3.4.0
 ARG OPENCV_VERSION
 ARG NODEJS_MAJOR_VERSION
 
@@ -133,8 +133,8 @@ RUN set -x && \
   cmake $cmake_flags .. && \
   make -j${NUM_THREADS} && \
   make install
-ENV OPENCV_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/opencv4
 
 ENV OPENCV4NODEJS_DISABLE_AUTOBUILD=1
-ENV OPENCV_INCLUDE_DIR=/usr/local/include/
+ENV OPENCV_INCLUDE_DIR=/usr/local/include/opencv4/
 ENV OPENCV_LIB_DIR=/opt/opencv-${OPENCV_VERSION}/build/lib/
+ENV OPENCV_BIN_DIR=/usr/local/bin
