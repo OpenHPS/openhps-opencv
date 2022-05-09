@@ -48,7 +48,7 @@ jobs:
             OPENCV_VERSION=${{ matrix.opencv-version }}
             NODEJS_MAJOR_VERSION=${{ matrix.node-version }}
             NUM_THREADS=${{ steps.cpu-cores.outputs.count }}
-            WITH_CONTRIB="${{ matrix.opencv-contrib }}"
+            WITH_CONTRIB=${{ matrix.opencv-contrib }}
           context: "./docker"
           file: "./docker/Dockerfile.${{ matrix.runtime }}"
           push: true
