@@ -23,6 +23,10 @@ jobs:
           - cpu
           - nvidia
     steps:
+      - name: Image information
+        run: |
+          echo "OpenCV version: ${{ matrix.opencv-version }}"
+          echo "NodeJS version: ${{ matrix.node-version }}"
       - uses: actions/checkout@v3
       - name: Get number of CPU cores
         uses: SimenB/github-actions-cpu-cores@v1
@@ -40,11 +44,11 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           build-args: |
-            "UBUNTU_VERSION=${{ matrix.ubuntu-version }}"
-            "OPENCV_VERSION=${{ matrix.opencv-version }}"
-            "NODEJS_MAJOR_VERSION=${{ matrix.node-version }}"
-            "NUM_THREADS=${{ steps.cpu-cores.outputs.count }}"
-            "WITH_CONTRIB=${{ matrix.opencv-contrib }}"
+            UBUNTU_VERSION=${{ matrix.ubuntu-version }}
+            OPENCV_VERSION=${{ matrix.opencv-version }}
+            NODEJS_MAJOR_VERSION=${{ matrix.node-version }}
+            NUM_THREADS=${{ steps.cpu-cores.outputs.count }}
+            WITH_CONTRIB=${{ matrix.opencv-contrib }}
           context: "./docker"
           file: "./docker/Dockerfile.${{ matrix.runtime }}"
           push: true
