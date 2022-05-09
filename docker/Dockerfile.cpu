@@ -7,6 +7,16 @@ ARG OPENCV_VERSION
 ARG NODEJS_MAJOR_VERSION
 
 FROM ubuntu:$UBUNTU_VERSION
+
+# Display arguments
+RUN echo " \
+  Ubuntu version: $UBUNTU_VERSION\n \
+  NodeJS version: $NODEJS_MAJOR_VERSION\n \
+  Eigen3 version: $EIGEN3_VERSION\n \
+  OpenCV version: $OPENCV_VERSION\n \
+  OpenCV contrib: $WITH_CONTRIB \
+"
+
 ENV DEBIAN_FRONTEND noninteractive
 
 # install dependencies via apt
