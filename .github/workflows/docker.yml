@@ -1,6 +1,8 @@
 name: Docker
 
 on:
+  push:
+    branches: [ master, dev ]
   workflow_dispatch:
 
 jobs:
