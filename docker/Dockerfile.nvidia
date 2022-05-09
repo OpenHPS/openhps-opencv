@@ -132,7 +132,7 @@ RUN set -x && \
       cmake_flags="$cmake_flags -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules"; \
   fi && \
   cmake_flags="$cmake_flags \
-    -DWITH_CUBLAS \\
+    -DWITH_CUBLAS \
     -DWITH_CUDA=ON \
     -DWITH_CUDNN=ON \
     -DOPENCV_DNN_CUDA=ON \
