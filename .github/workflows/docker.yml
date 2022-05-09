@@ -35,6 +35,6 @@ jobs:
             OPENCV_VERSION=${{ matrix.opencv-version }}
             NODE_VERSION=${{ matrix.node-version }}
           context: "./docker"
-          file: "./docker/Dockerfile.${{ matrix.runtime }}"
+          file: "./docker/Dockerfile"
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/opencv-nodejs:ubuntu${{ matrix.ubuntu-version }}-node${{ matrix.node-version }}-opencv${{ matrix.opencv-version }}
