@@ -16,8 +16,17 @@ jobs:
         opencv-version:
           - 3.4.15
           - 4.5.5
+        opencv-contrib:
+          - true
+          - false
+        runtime:
+          - cpu
+          - nvidia
     steps:
       - uses: actions/checkout@v3
+      - name: Get number of CPU cores
+        uses: SimenB/github-actions-cpu-cores@v1
+        id: cpu-cores
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -34,7 +43,9 @@ jobs:
             UBUNTU_VERSION=${{ matrix.ubuntu-version }}
             OPENCV_VERSION=${{ matrix.opencv-version }}
             NODEJS_MAJOR_VERSION=${{ matrix.node-version }}
+            NUM_THREADS=${{ steps.cpu-cores.outputs.count }}
+            WITH_CONTRIB=${{ matrix.opencv-contrib }}
           context: "./docker"
-          file: "./docker/Dockerfile"
+          file: "./docker/Dockerfile.${{ matrix.runtime }}"
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/opencv-nodejs:ubuntu${{ matrix.ubuntu-version }}-node${{ matrix.node-version }}-opencv${{ matrix.opencv-version }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/opencv-nodejs:ubuntu${{ matrix.ubuntu-version }}-node${{ matrix.node-version }}-opencv${{ matrix.opencv-version }}${{ (matrix.opencv-contrib && '-contrib') || '' }}-${{ matrix.node-version }}${{ (matrix.runtime == 'nvidia' && '-nvidia') || '' }}

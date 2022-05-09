@@ -1,15 +1,22 @@
 ARG UBUNTU_VERSION
-FROM ubuntu:$UBUNTU_VERSION
+ARG WITH_CONTRIB
+ARG NUM_THREADS
+ARG CMAKE_INSTALL_PREFIX=/usr/local
+ARG EIGEN3_VERSION=3.3.7
+ARG OPENCV_VERSION
+
+FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu$UBUNTU_VERSION
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG OPENCV_VERSION
-ARG NODEJS_MAJOR_VERSION
-ARG WITH_CONTRIB
+RUN rm /etc/apt/sources.list.d/cuda.list
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # install dependencies via apt
 ENV DEBCONF_NOWARNINGS yes
 RUN set -x && \
   apt-get update -y -qq && \
+  apt-get install -y software-properties-common && \
+  add-apt-repository -y ppa:git-core/ppa && \
   apt-get upgrade -y -qq --no-install-recommends && \
   : "basic dependencies" && \
   apt-get install -y -qq \
@@ -38,24 +45,27 @@ RUN set -x && \
   apt-get autoremove -y -qq && \
   rm -rf /var/lib/apt/lists/*
 
+# Python3
+RUN apt-get update \
+  && apt-get install -y python3-pip python3-dev \
+  && cd /usr/local/bin \
+  && ln -s /usr/bin/python3 python \
+  && pip3 install --upgrade pip
+
+# Node
+RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x | bash && \
+  apt-get install -y nodejs && node -v && npm -v
+
 ENV CPATH=${CMAKE_INSTALL_PREFIX}/include:${CPATH}
 ENV C_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include:${C_INCLUDE_PATH}
 ENV CPLUS_INCLUDE_PATH=${CMAKE_INSTALL_PREFIX}/include:${CPLUS_INCLUDE_PATH}
 ENV LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${LIBRARY_PATH}
 ENV LD_LIBRARY_PATH=${CMAKE_INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
 
-# Node
-RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_MAJOR_VERSION}.x | bash && \
-  apt-get install -y nodejs && node -v && npm -v
-
-ARG CMAKE_INSTALL_PREFIX=/usr/local
-ARG NUM_THREADS=7
-
 # Eigen
-ARG EIGEN3_VERSION=3.3.7
 WORKDIR /tmp
 RUN set -x && \
-  wget -q https://gitlab.com/cantonios/eigen/-/archive/${EIGEN3_VERSION}/eigen-${EIGEN3_VERSION}.tar.bz2 && \
+  wget -q https://gitlab.com/libeigen/eigen/-/archive/${EIGEN3_VERSION}/eigen-${EIGEN3_VERSION}.tar.bz2 && \
   tar xf eigen-${EIGEN3_VERSION}.tar.bz2 && \
   rm -rf eigen-${EIGEN3_VERSION}.tar.bz2 && \
   cd eigen-${EIGEN3_VERSION} && \
@@ -74,9 +84,9 @@ ENV Eigen3_DIR=${CMAKE_INSTALL_PREFIX}/share/eigen3/cmake
 # OpenCV
 WORKDIR /opt
 RUN set -x && \
-  wget -q https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
-  unzip -q ${OPENCV_VERSION}.zip && \
-  rm -rf ${OPENCV_VERSION}.zip && \
+  wget -O opencv_${OPENCV_VERSION}.zip https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+  unzip -q opencv_${OPENCV_VERSION}.zip && \
+  rm -rf opencv_${OPENCV_VERSION}.zip && \
   if [ -n "$WITH_CONTRIB" ]; then \
     wget -O opencv_contrib_${OPENCV_VERSION}.zip https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.zip; \
     unzip -q opencv_contrib_${OPENCV_VERSION}.zip; \
@@ -85,7 +95,8 @@ RUN set -x && \
   cd opencv-${OPENCV_VERSION} && \
   mkdir -p build && \
   cd build && \
-  cmake_flags="-DCMAKE_BUILD_TYPE=Release \
+  cmake \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
     -DBUILD_DOCS=OFF \
     -DBUILD_EXAMPLES=OFF \
@@ -103,19 +114,31 @@ RUN set -x && \
     -DWITH_FFMPEG=ON \
     -DWITH_OPENMP=ON \
     -DWITH_TBB=ON \
+    -DCUDA_FAST_MATH=1 \
+    -DWITH_CUBLAS=1 \
     -DWITH_V4L=ON \
     -DWITH_QT=OFF \
     -DWITH_OPENGL=ON \
     -DWITH_GSTREAMER=ON \
     -DOPENCV_GENERATE_PKGCONFIG=ON \
-    -DOPENCV_ENABLE_NONFREE=ON" && \
-  if [ -n "$WITH_CONTRIB" ]; then \
-      cmake_flags="$cmake_flags -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules"; \
-  fi && \
-  cmake $cmake_flags .. && \
+    -DOPENCV_ENABLE_NONFREE=ON \
+    -DWITH_CUDA=ON \
+    -DWITH_CUDNN=ON \
+    -DOPENCV_DNN_CUDA=ON \
+    -DCUDA_ARCH_BIN=7.5 \
+    -DBUILD_opencv_cudacodec=OFF \
+    if [ -n "$WITH_CONTRIB" ]; then \
+      -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
+    fi \
+    .. && \
   make -j${NUM_THREADS} && \
   make install
-ENV OpenCV_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/opencv
+ENV OPENCV_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/opencv4
+
+# CUDA
+ENV CUDACXX /usr/local/cuda/bin/nvcc
+ENV CUDA_INCLUDE_DIRS /usr/local/cuda/include
+ENV CUDA_CUDART_LIBRARY /usr/local/cuda/lib64/
 
 ENV OPENCV4NODEJS_DISABLE_AUTOBUILD=1
 ENV OPENCV_INCLUDE_DIR=/usr/local/include/
