@@ -44,10 +44,10 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           build-args: |
-            UBUNTU_VERSION="${{ matrix.ubuntu-version }}"
-            OPENCV_VERSION="${{ matrix.opencv-version }}"
-            NODEJS_MAJOR_VERSION="${{ matrix.node-version }}"
-            NUM_THREADS="${{ steps.cpu-cores.outputs.count }}"
+            UBUNTU_VERSION=${{ matrix.ubuntu-version }}
+            OPENCV_VERSION=${{ matrix.opencv-version }}
+            NODEJS_MAJOR_VERSION=${{ matrix.node-version }}
+            NUM_THREADS=${{ steps.cpu-cores.outputs.count }}
             WITH_CONTRIB="${{ matrix.opencv-contrib }}"
           context: "./docker"
           file: "./docker/Dockerfile.${{ matrix.runtime }}"
