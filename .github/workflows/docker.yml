@@ -1,8 +1,8 @@
 name: Docker
 
 on:
-  push:
-    branches: [ master, dev ]
+  schedule:
+    - cron: "0 13 * * 1"
   workflow_dispatch:
 
 jobs:
@@ -51,4 +51,4 @@ jobs:
           context: "./docker"
           file: "./docker/Dockerfile.${{ matrix.runtime }}"
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/opencv-nodejs:ubuntu${{ matrix.ubuntu-version }}-node${{ matrix.node-version }}-opencv${{ matrix.opencv-version }}${{ (matrix.opencv-contrib && '-contrib') || '' }}-${{ matrix.node-version }}${{ (matrix.runtime == 'nvidia' && '-cuda') || '' }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/opencv-nodejs:ubuntu${{ matrix.ubuntu-version }}-node${{ matrix.node-version }}-opencv${{ matrix.opencv-version }}${{ (matrix.opencv-contrib && '-contrib') || '' }}${{ (matrix.runtime == 'nvidia' && '-cuda') || '' }}
