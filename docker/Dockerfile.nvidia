@@ -137,8 +137,7 @@ RUN set -x && \
     -DWITH_CUDNN=ON \
     -DOPENCV_DNN_CUDA=ON \
     -DCUDA_ARCH_BIN=7.5 \
-    -DBUILD_opencv_cudacodec=OFF \
-  " && \
+    -DBUILD_opencv_cudacodec=OFF"; && \
   cmake $cmake_flags .. && \
   make -j${NUM_THREADS} && \
   make install
