@@ -7,15 +7,12 @@ on:
     branches: [ master, dev ]
   workflow_dispatch:
 
-env:
-  container: openhps/opencv-nodejs:node14-opencv4.5.5-contrib
-
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     container:
-      image:  $container
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -49,7 +46,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: $container
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -57,7 +54,7 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
       - name: Quality
         run: |
           npm run lint
@@ -67,7 +64,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: $container
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -75,7 +72,7 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:
@@ -98,7 +95,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: $container
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -106,7 +103,7 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:
@@ -130,7 +127,7 @@ jobs:
       - quality
     runs-on: ubuntu-latest
     container:
-      image: $container
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load document cache
@@ -157,7 +154,7 @@ jobs:
     needs: test_coverage
     runs-on: ubuntu-latest
     container:
-      image: $container
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load test and coverage cache
@@ -186,7 +183,7 @@ jobs:
       - test_coverage
     runs-on: ubuntu-latest
     container:
-      image: $container
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
     if: github.ref == 'refs/heads/dev'
     steps:
       - uses: actions/checkout@v3
@@ -195,7 +192,7 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:
@@ -227,7 +224,7 @@ jobs:
       - test_coverage
     runs-on: ubuntu-latest
     container:
-      image: $container
+      image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
@@ -236,7 +233,7 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:

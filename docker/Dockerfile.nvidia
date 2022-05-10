@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ARG WITH_CONTRIB
 ARG NUM_THREADS
 ARG CMAKE_INSTALL_PREFIX=/usr/local
-ARG EIGEN3_VERSION=3.3.7
+ARG EIGEN3_VERSION=3.4.0
 ARG OPENCV_VERSION
 ARG NODEJS_MAJOR_VERSION
 
@@ -116,8 +116,7 @@ RUN set -x && \
   cd opencv-${OPENCV_VERSION} && \
   mkdir -p build && \
   cd build && \
-  cmake \
-    -DCMAKE_BUILD_TYPE=Release \
+  cmake_flags="-DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
     -DBUILD_DOCS=OFF \
     -DBUILD_EXAMPLES=OFF \
@@ -135,26 +134,25 @@ RUN set -x && \
     -DWITH_FFMPEG=ON \
     -DWITH_OPENMP=ON \
     -DWITH_TBB=ON \
-    -DCUDA_FAST_MATH=1 \
-    -DWITH_CUBLAS=1 \
     -DWITH_V4L=ON \
     -DWITH_QT=OFF \
     -DWITH_OPENGL=ON \
     -DWITH_GSTREAMER=ON \
     -DOPENCV_GENERATE_PKGCONFIG=ON \
-    -DOPENCV_ENABLE_NONFREE=ON \
+    -DOPENCV_ENABLE_NONFREE=ON" && \
+  if [ -n "$WITH_CONTRIB" ]; then \
+    cmake_flags="$cmake_flags -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules"; \
+  fi && \
+  cmake_flags="$cmake_flags \
+    -DWITH_CUBLAS=1 \
     -DWITH_CUDA=ON \
     -DWITH_CUDNN=ON \
     -DOPENCV_DNN_CUDA=ON \
     -DCUDA_ARCH_BIN=7.5 \
-    -DBUILD_opencv_cudacodec=OFF \
-    if [ -n "$WITH_CONTRIB" ]; then \
-      -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
-    fi \
-    .. && \
+    -DBUILD_opencv_cudacodec=OFF" && \
+  cmake $cmake_flags .. && \
   make -j${NUM_THREADS} && \
   make install
-ENV OPENCV_DIR=${CMAKE_INSTALL_PREFIX}/lib/cmake/opencv4
 
 # CUDA
 ENV CUDACXX /usr/local/cuda/bin/nvcc
@@ -162,5 +160,6 @@ ENV CUDA_INCLUDE_DIRS /usr/local/cuda/include
 ENV CUDA_CUDART_LIBRARY /usr/local/cuda/lib64/
 
 ENV OPENCV4NODEJS_DISABLE_AUTOBUILD=1
-ENV OPENCV_INCLUDE_DIR=/usr/local/include/
+ENV OPENCV_INCLUDE_DIR=/usr/local/include/opencv4/
 ENV OPENCV_LIB_DIR=/opt/opencv-${OPENCV_VERSION}/build/lib/
+ENV OPENCV_BIN_DIR=/usr/local/bin
