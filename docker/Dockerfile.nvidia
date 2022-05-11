@@ -135,6 +135,7 @@ RUN set -x && \
     -DWITH_CUBLAS=1 \
     -DWITH_CUDA=ON \
     -DWITH_CUDNN=ON \
+    -DCUDA_FAST_MATH=ON \
     -DOPENCV_DNN_CUDA=ON \
     -DCUDA_ARCH_BIN=7.5 \
     -DBUILD_opencv_cudacodec=OFF" && \
