@@ -1,4 +1,4 @@
-import { SourceNode, SourceNodeOptions } from '@openhps/core';
+import { SourceNode, SourceNodeOptions, TimeService, TimeUnit } from '@openhps/core';
 import { CameraObject, VideoFrame } from '@openhps/video';
 import {
     VideoCapture,
@@ -136,7 +136,10 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
                     if (!frameImage || frameImage.empty) {
                         return resolve(undefined);
                     }
-                    videoFrame.phenomenonTimestamp = this._frame * (1 / this.options.fps);
+                    videoFrame.phenomenonTimestamp = TimeUnit.SECOND.convert(
+                        this._frame * (1 / this.options.fps),
+                        TimeService.getUnit(),
+                    );
                     videoFrame.rows = this.options.height || frameImage.sizes[0];
                     videoFrame.cols = this.options.width || frameImage.sizes[1];
                     videoFrame.image = frameImage;
