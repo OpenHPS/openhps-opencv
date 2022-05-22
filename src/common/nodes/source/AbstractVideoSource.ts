@@ -14,7 +14,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     protected options: VideoSourceOptions;
     private _timer: NodeJS.Timer;
     private _srcFPS: number;
-    private _frame: number;
+    private _frame = 0;
     private _start: number;
 
     constructor(options?: VideoSourceOptions) {
@@ -59,6 +59,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     }
 
     reset(): void {
+        this._frame = 0;
         this.videoCapture.reset();
     }
 
@@ -73,7 +74,6 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
      */
     play(): NodeJS.Timer {
         let ready = true;
-        this._frame = 0;
         this._timer = setInterval(
             () => {
                 if (ready || !this.options.throttleRead) {
@@ -83,7 +83,6 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
                             if (!videoFrame) {
                                 return clearInterval(this._timer);
                             }
-                            this._frame++;
                             if (!this.options.throttlePush) {
                                 ready = true;
                             }
@@ -136,8 +135,9 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
                     if (!frameImage || frameImage.empty) {
                         return resolve(undefined);
                     }
+                    this._frame++; // Increase frame
                     videoFrame.phenomenonTimestamp = TimeUnit.SECOND.convert(
-                        this._frame * (1 / this.options.fps),
+                        this._frame * (1.0 / videoFrame.fps),
                         TimeService.getUnit(),
                     );
                     videoFrame.rows = this.options.height || frameImage.sizes[0];

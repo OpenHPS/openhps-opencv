@@ -31,9 +31,10 @@
   "scripts": {
     "postinstall": "npm run build:opencv",
     "test": "mocha --config test/.mocharc.json",
-    "test:docker": "docker-compose run opencv-cpu /opt/app/docker/docker-entrypoint.sh",
+    "test:docker": "docker-compose run -w /opt/app opencv-cpu npm run test",
     "cover": "nyc mocha --config test/.mocharc.json && nyc report --reporter=cobertura",
     "cover:ci": "nyc mocha --config test/.mocharc.json --reporter mocha-junit-reporter && nyc report --reporter=cobertura",
+    "cover:ci:docker": "docker-compose run -w /opt/app opencv-cpu npm run cover:ci",
     "lint": "eslint src/**",
     "clean": "shx rm -rf ./dist && shx rm -rf ./docs/out",
     "build": "npm run clean && npm-run-all --parallel build:ts:* && npm run build:webpack",

@@ -1,7 +1,7 @@
 import { VideoSource, ImageFrame, ImageDisplaySink, OpenCV } from '../../src';
 import { expect } from 'chai';
 import 'mocha';
-import { ModelBuilder, SinkNode, TimedPullNode, TimeUnit, CallbackSinkNode } from '@openhps/core';
+import { ModelBuilder, SinkNode, TimedPullNode, TimeUnit, CallbackSinkNode, TimeService } from '@openhps/core';
 
 describe('video', () => {
     describe('input', () => {
@@ -17,12 +17,20 @@ describe('video', () => {
                     model = m;
                     callbackSinkNode.callback = (frame: ImageFrame) => {
                         image1 = frame.image;
+                        expect(frame.phenomenonTimestamp).to.equal(TimeUnit.SECOND.convert(
+                            1 * (1.0 / 29.99992433814795),
+                            TimeService.getUnit(),
+                        ));
                         expect(image1.getData().byteLength).to.equal(6220800);
                     }
                     return model.pull();
                 }).then(() => {
                     callbackSinkNode.callback = (frame: ImageFrame) => {
                         const image2 = frame.image;
+                        expect(frame.phenomenonTimestamp).to.equal(TimeUnit.SECOND.convert(
+                            2 * (1.0 / 29.99992433814795),
+                            TimeService.getUnit(),
+                        ));
                         expect(image2.getData().byteLength).to.equal(6220800);
                         expect(image1).to.not.equal(image2);
                         done();
