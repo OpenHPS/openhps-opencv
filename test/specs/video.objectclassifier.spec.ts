@@ -1,7 +1,7 @@
 import { VideoSource, FaceDetectionNode, EyeDetectionNode, ImageFrame, ImageFeatureObject } from '../../src';
 import { expect } from 'chai';
 import 'mocha';
-import { SinkNode, TimedPullNode, TimeUnit } from '@openhps/core';
+import { SinkNode } from '@openhps/core';
 import { ModelBuilder } from '@openhps/core';
 
 describe('video', () => {

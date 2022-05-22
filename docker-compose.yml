@@ -2,14 +2,14 @@ version: '3'
 services:
   opencv-cpu:
     network_mode: host
-    image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
+    image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.3-contrib
     container_name: 'opencv-cpu'
     volumes: 
     - ./:/opt/app
-    #- node_modules:/opt/app/node_modules/
+    - node_modules:/opt/app/node_modules/
   opencv-cuda:
     network_mode: host
-    image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib-cuda
+    image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.3-contrib-cuda
     container_name: 'opencv-cuda'
     deploy:
       resources:

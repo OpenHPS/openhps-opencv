@@ -17,6 +17,7 @@ jobs:
           - 14
         opencv-version:
           - 4.5.5
+          - 4.5.3
         opencv-contrib:
           - true
           - false
