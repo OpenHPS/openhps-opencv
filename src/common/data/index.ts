@@ -8,11 +8,11 @@ DataSerializer.registerType(Mat, {
         }
         return imencode('.jpg', image);
     },
-    deserializer: (json: any) => {
-        if (!json) {
+    deserializer: (buffer: Buffer) => {
+        if (!buffer) {
             return undefined;
         }
-        return imdecode(json);
+        return imdecode(buffer);
     },
 });
 

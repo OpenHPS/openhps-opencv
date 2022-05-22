@@ -69,7 +69,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     /**
      * Start playback of the video stream
      *
-     * @returns {NodeJS.Timer} Running frame grab timer
+     * @returns {number} Running frame grab timer
      */
     play(): NodeJS.Timer {
         let ready = true;
@@ -133,9 +133,10 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
             videoFrame.fps = this.options.fps;
             this.readFrame()
                 .then((frameImage: Mat) => {
-                    if (!frameImage) {
+                    if (!frameImage || frameImage.empty) {
                         return resolve(undefined);
                     }
+                    videoFrame.phenomenonTimestamp = this._frame * (1 / this.options.fps);
                     videoFrame.rows = this.options.height || frameImage.sizes[0];
                     videoFrame.cols = this.options.width || frameImage.sizes[1];
                     videoFrame.image = frameImage;
