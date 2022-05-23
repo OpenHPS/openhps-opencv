@@ -203,6 +203,7 @@ jobs:
         run: |
           git config --global user.name 'CI'
           git config --global user.email 'ci@openhps.org'
+          git config --global --add safe.directory /__w/openhps-opencv/openhps-opencv
       - name: Bump version development
         run: |
           npm run bump:development
@@ -244,6 +245,7 @@ jobs:
         run: |
           git config --global user.name 'CI'
           git config --global user.email 'ci@openhps.org'
+          git config --global --add safe.directory /__w/openhps-opencv/openhps-opencv
       - name: Bump version release
         run: |
           npm run bump:release

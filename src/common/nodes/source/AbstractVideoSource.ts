@@ -1,4 +1,4 @@
-import { SourceNode, SourceNodeOptions } from '@openhps/core';
+import { SourceNode, SourceNodeOptions, TimeService, TimeUnit } from '@openhps/core';
 import { CameraObject, VideoFrame } from '@openhps/video';
 import {
     VideoCapture,
@@ -14,7 +14,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     protected options: VideoSourceOptions;
     private _timer: NodeJS.Timer;
     private _srcFPS: number;
-    private _frame: number;
+    private _frame = 0;
     private _start: number;
 
     constructor(options?: VideoSourceOptions) {
@@ -59,6 +59,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     }
 
     reset(): void {
+        this._frame = 0;
         this.videoCapture.reset();
     }
 
@@ -69,11 +70,10 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     /**
      * Start playback of the video stream
      *
-     * @returns {NodeJS.Timer} Running frame grab timer
+     * @returns {number} Running frame grab timer
      */
     play(): NodeJS.Timer {
         let ready = true;
-        this._frame = 0;
         this._timer = setInterval(
             () => {
                 if (ready || !this.options.throttleRead) {
@@ -83,7 +83,6 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
                             if (!videoFrame) {
                                 return clearInterval(this._timer);
                             }
-                            this._frame++;
                             if (!this.options.throttlePush) {
                                 ready = true;
                             }
@@ -133,9 +132,14 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
             videoFrame.fps = this.options.fps;
             this.readFrame()
                 .then((frameImage: Mat) => {
-                    if (!frameImage) {
+                    if (!frameImage || frameImage.empty) {
                         return resolve(undefined);
                     }
+                    this._frame++; // Increase frame
+                    videoFrame.phenomenonTimestamp = TimeUnit.SECOND.convert(
+                        this._frame * (1.0 / videoFrame.fps),
+                        TimeService.getUnit(),
+                    );
                     videoFrame.rows = this.options.height || frameImage.sizes[0];
                     videoFrame.cols = this.options.width || frameImage.sizes[1];
                     videoFrame.image = frameImage;

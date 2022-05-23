@@ -1,0 +1,25 @@
+version: '3'
+services:
+  opencv-cpu:
+    network_mode: host
+    image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib
+    container_name: 'opencv-cpu'
+    volumes: 
+    - ./:/opt/app
+    - node_modules:/opt/app/node_modules/
+  opencv-cuda:
+    network_mode: host
+    image: openhps/opencv-nodejs:ubuntu18.04-node14-opencv4.5.5-contrib-cuda
+    container_name: 'opencv-cuda'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes: 
+    - ./:/opt/app
+    - node_modules:/opt/app/node_modules/
+volumes:
+  node_modules:

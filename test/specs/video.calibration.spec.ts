@@ -28,6 +28,7 @@ describe('video', () => {
                     model = m;
                     callbackSinkNode.callback = (frame: ImageFrame) => {
                         if (frame.source.distortionCoefficients) {
+                            //console.log(frame.source.distortionCoefficients, frame.source.cameraMatrix)
                             expect(frame.source.distortionCoefficients.length).to.equal(5);
                             done();
                         }
