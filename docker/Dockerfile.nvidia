@@ -1,10 +1,4 @@
 ARG UBUNTU_VERSION
-<<<<<<< HEAD
-FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu$UBUNTU_VERSION
-ENV DEBIAN_FRONTEND noninteractive
-
-=======
->>>>>>> dafdd3b1ff054015186f7e7e8b42f01eb4940a36
 ARG WITH_CONTRIB
 ARG NUM_THREADS
 ARG CMAKE_INSTALL_PREFIX=/usr/local
@@ -12,17 +6,12 @@ ARG EIGEN3_VERSION=3.4.0
 ARG OPENCV_VERSION
 ARG NODEJS_MAJOR_VERSION
 
-<<<<<<< HEAD
-# Display arguments
-RUN echo " \
-=======
 FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu$UBUNTU_VERSION
 ENV DEBIAN_FRONTEND noninteractive
 
 # Display arguments
 RUN echo " \
   Ubuntu version: $UBUNTU_VERSION\n \
->>>>>>> dafdd3b1ff054015186f7e7e8b42f01eb4940a36
   NodeJS version: $NODEJS_MAJOR_VERSION\n \
   Eigen3 version: $EIGEN3_VERSION\n \
   OpenCV version: $OPENCV_VERSION\n \
