@@ -18,7 +18,6 @@ export class ImageDisplaySink extends SinkNode<ImageFrame> {
 
     /**
      * Push the data to the output
-     *
      * @param {ImageFrame} data Input data
      * @returns {Promise<void>} Push promise
      */

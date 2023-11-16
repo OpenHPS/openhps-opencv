@@ -24,7 +24,6 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
 
     /**
      * Process the data that was pushed or pulled from this layer
-     *
      * @param {ImageFrame} data Data frame
      * @returns {Promise<ImageFrame>} Image frame processing promise
      */
@@ -41,8 +40,9 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
             }
 
             let calibrationData: CameraCalibrationData;
-            const gray = data.image.bgrToGray();
+            const gray: Mat = data.image.bgrToGray();
             let matrix: Mat;
+            // Get previously stored data
             this.getNodeData(data.source, {
                 objectPoints: [],
                 imagePoints: [],
@@ -65,6 +65,7 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                     calibrationData.imagePoints.push(corners.map((corner) => [corner.x, corner.y]));
                     calibrationData.objectPoints.push(objectPoint);
 
+                    // Draw chessboard corners if enabled
                     if (this.options.drawChessboardCorners) {
                         data.image.drawChessboardCorners(boardSize, corners, true);
                     }
@@ -77,12 +78,14 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                             imagePointArray.map((point) => new Point2(point[0], point[1])),
                         );
 
+                        // Initialize camera matrix
                         matrix = initCameraMatrix2D(
                             objectPoints as any,
                             imagePoints as any,
                             new Size(data.image.cols, data.image.rows),
                         );
 
+                        // Perform camera calibration based on chessboard
                         return calibrateCameraAsync(
                             objectPoints as any,
                             imagePoints as any,
@@ -124,7 +127,6 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
 export interface CameraCalibrationOptions extends ProcessingNodeOptions {
     /**
      * Draw chessboard corners after detection
-     *
      * @default false
      */
     drawChessboardCorners?: boolean;

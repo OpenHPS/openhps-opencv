@@ -10,7 +10,6 @@ export class ImageFeatureObject extends DataObject {
 
     /**
      * Confidence of image features
-     *
      * @returns {number} confidence
      */
     @SerializableMember()

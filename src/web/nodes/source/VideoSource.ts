@@ -4,7 +4,6 @@ import { AbstractVideoSource } from '../../../common/nodes';
 export class VideoSource extends AbstractVideoSource {
     /**
      * Load video from file, stream, port
-     *
      * @param {string} videoSource File path
      * @returns {VideoSource} Video source instance
      */

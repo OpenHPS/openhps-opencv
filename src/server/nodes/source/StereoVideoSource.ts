@@ -12,7 +12,6 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
 
     /**
      * Load video from file or stream path
-     *
      * @param {string} filePathLeft Video file for left camera
      * @param {string} filePathRight Video file for right camera
      * @returns {StereoVideoSource} Stereo video source
@@ -25,7 +24,6 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
 
     /**
      * Load video from port
-     *
      * @param {number} portLeft COM Port of left camera
      * @param {number} portRight COM Port of right camera
      * @returns {StereoVideoSource} Stero video source
@@ -84,7 +82,6 @@ export class StereoVideoSource extends SourceNode<StereoVideoFrame> {
 
     /**
      * Pull the next frame
-     *
      * @returns {Promise<StereoVideoSource>} Pull promise
      */
     onPull(): Promise<StereoVideoFrame> {

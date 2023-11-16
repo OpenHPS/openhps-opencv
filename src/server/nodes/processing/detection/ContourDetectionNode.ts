@@ -12,6 +12,7 @@ export class ContourDetectionNode<InOut extends ImageFrame> extends ProcessingNo
     process(frame: InOut): Promise<InOut> {
         return new Promise((resolve) => {
             if (frame.image) {
+                // eslint-disable-next-line
                 const contours: Contour[] = frame.image.findContours(
                     this.options.mode ? this.options.mode : RETR_EXTERNAL,
                     this.options.method ? this.options.method : CHAIN_APPROX_SIMPLE,

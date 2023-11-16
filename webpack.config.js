@@ -11,7 +11,7 @@ const defaultConfig = env => ({
   resolve: {
     alias: {
       typescript: false,
-      '@u4/opencv4nodejs': path.resolve(__dirname, "lib/opencv@4.5.5.js")
+      '@u4/opencv4nodejs': '@techstark/opencv-js'
     },
     fallback: {
       path: false,

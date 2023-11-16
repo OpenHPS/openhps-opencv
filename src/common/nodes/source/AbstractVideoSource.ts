@@ -7,15 +7,17 @@ import {
     CAP_PROP_FOURCC,
     CAP_PROP_BRIGHTNESS,
     CAP_PROP_CONTRAST,
+    CAP_PROP_FRAME_COUNT,
 } from '@u4/opencv4nodejs';
 
 export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     public videoCapture: VideoCapture;
     protected options: VideoSourceOptions;
-    private _timer: NodeJS.Timer;
-    private _srcFPS: number;
-    private _frame = 0;
-    private _start: number;
+    protected timer: NodeJS.Timer;
+    protected srcFPS: number;
+    protected frame = 0;
+    protected start: number;
+    protected totalFrames: number;
 
     constructor(options?: VideoSourceOptions) {
         super(options);
@@ -35,15 +37,15 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
 
     /**
      * Load video from file, stream, port
-     *
      * @param {string} videoSource File path
      * @returns {AbstractVideoSource} Video source instance
      */
     load(videoSource: string | number | Element): this {
         this.videoCapture = new VideoCapture(videoSource as any);
-        this._srcFPS = this.videoCapture.get(CAP_PROP_FPS);
-        this.options.fps = this.options['fps'] === undefined ? this._srcFPS : this.options.fps;
+        this.srcFPS = this.videoCapture.get(CAP_PROP_FPS);
+        this.options.fps = this.options['fps'] === undefined ? this.srcFPS : this.options.fps;
         this.options.fourcc = this.videoCapture.get(CAP_PROP_FOURCC);
+        this.totalFrames = this.videoCapture.get(CAP_PROP_FRAME_COUNT);
 
         if (this.options['brightness'] !== undefined) {
             this.videoCapture.set(CAP_PROP_BRIGHTNESS, this.options.brightness);
@@ -59,7 +61,7 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     }
 
     reset(): void {
-        this._frame = 0;
+        this.frame = 0;
         this.videoCapture.reset();
     }
 
@@ -69,19 +71,18 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
 
     /**
      * Start playback of the video stream
-     *
      * @returns {number} Running frame grab timer
      */
     play(): NodeJS.Timer {
         let ready = true;
-        this._timer = setInterval(
+        this.timer = setInterval(
             () => {
                 if (ready || !this.options.throttleRead) {
                     ready = false;
                     this._readFrame()
                         .then((videoFrame: VideoFrame) => {
                             if (!videoFrame) {
-                                return clearInterval(this._timer);
+                                return clearInterval(this.timer as any);
                             }
                             if (!this.options.throttlePush) {
                                 ready = true;
@@ -100,23 +101,30 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
             },
             this.options.fps === -1 ? 0 : 1000 / this.options.fps,
         );
-        this._start = Date.now();
-        return this._timer;
+        this.start = Date.now();
+        return this.timer;
     }
 
     stop(): void {
-        if (this._timer) {
-            clearInterval(this._timer);
+        if (this.timer) {
+            clearInterval(this.timer as any);
         }
     }
 
+    get currentFrameCount(): number {
+        return this.frame;
+    }
+
+    get totalFrameCount(): number {
+        return this.totalFrames;
+    }
+
     get actualFPS(): number {
-        return Math.round((this._frame / ((Date.now() - this._start) / 1000)) * 100) / 100;
+        return Math.round((this.frame / ((Date.now() - this.start) / 1000)) * 100) / 100;
     }
 
     /**
      * Pull the next frame
-     *
      * @returns {Promise<AbstractVideoSource>} Pull promise
      */
     onPull(): Promise<VideoFrame> {
@@ -135,9 +143,9 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
                     if (!frameImage || frameImage.empty) {
                         return resolve(undefined);
                     }
-                    this._frame++; // Increase frame
+                    this.frame++; // Increase frame
                     videoFrame.phenomenonTimestamp = TimeUnit.SECOND.convert(
-                        this._frame * (1.0 / videoFrame.fps),
+                        this.frame * (1.0 / videoFrame.fps),
                         TimeService.getUnit(),
                     );
                     videoFrame.rows = this.options.height || frameImage.sizes[0];
@@ -171,4 +179,9 @@ export interface VideoSourceOptions extends SourceNodeOptions {
     fourcc?: number;
     width?: number;
     height?: number;
+    /**
+     * Frames to skip
+     * @default 1
+     */
+    frameSkip?: number;
 }

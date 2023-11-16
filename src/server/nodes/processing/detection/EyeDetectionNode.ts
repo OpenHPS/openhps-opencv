@@ -9,7 +9,6 @@ export class EyeDetectionNode extends ImageObjectClassifierNode<ImageFeatureObje
 
     /**
      * Process the data that was pushed or pulled from this layer
-     *
      * @param {ImageFrame} data Data frame
      * @returns {Promise<ImageFrame>} Image frame processing promise
      */

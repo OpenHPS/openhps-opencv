@@ -12,7 +12,6 @@ export class ImageTransformNode<InOut extends ImageFrame> extends ImageProcessin
 
     /**
      * Transform the image
-     *
      * @author Adrian Rosenbrock
      * @see {@link https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/}
      * @param {Mat} image Image to process and transform

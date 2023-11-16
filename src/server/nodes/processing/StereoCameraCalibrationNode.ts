@@ -11,7 +11,6 @@ import {
 export class StereoCameraCalibrationNode extends ProcessingNode<StereoImageFrame, StereoImageFrame> {
     /**
      * Process the data that was pushed or pulled from this layer
-     *
      * @param {StereoImageFrame} data Data frame
      * @returns {Promise<StereoImageFrame>} Stereo image frame processing promise
      */

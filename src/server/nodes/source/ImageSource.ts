@@ -52,7 +52,6 @@ export class ImageSource extends SourceNode<ImageFrame> {
 
     /**
      * Pull the next image frame
-     *
      * @returns {Promise<VideoFrame>} Pull promise
      */
     onPull(): Promise<VideoFrame> {

@@ -4,7 +4,6 @@ import { ImageFrame, StereoImageFrame, StereoCameraObject } from '../../../commo
 export class DisparityProcessingNode extends ProcessingNode<StereoImageFrame, ImageFrame> {
     /**
      * Process the data that was pushed or pulled from this layer
-     *
      * @param {StereoImageFrame} data Data frame
      * @returns {Promise<ImageFrame>} Image frame processing promise
      */
