@@ -1,0 +1,33 @@
+version: '3'
+services:
+  opencv-cpu:
+    network_mode: host
+    build:
+      context: . 
+      dockerfile: Dockerfile.cpu
+      args:
+        - WITH_CONTRIB=true
+        - NUM_THREADS=8
+        - OPENCV_VERSION=4.8.1
+        - NODEJS_MAJOR_VERSION=20
+        - UBUNTU_VERSION=18.04
+    container_name: 'opencv-cpu'
+  opencv-cuda:
+    network_mode: host
+    build:
+      context: . 
+      dockerfile: Dockerfile.nvidia
+      args:
+        - WITH_CONTRIB=true
+        - NUM_THREADS=8
+        - OPENCV_VERSION=4.8.1
+        - NODEJS_MAJOR_VERSION=20
+        - UBUNTU_VERSION=18.04
+    container_name: 'opencv-cuda'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

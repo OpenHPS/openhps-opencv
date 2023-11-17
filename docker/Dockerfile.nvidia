@@ -1,14 +1,14 @@
 ARG UBUNTU_VERSION
-ARG WITH_CONTRIB
-ARG NUM_THREADS
+
+FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu$UBUNTU_VERSION
+# FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu$UBUNTU_VERSION
+ENV DEBIAN_FRONTEND noninteractive
 ARG CMAKE_INSTALL_PREFIX=/usr/local
 ARG EIGEN3_VERSION=3.4.0
+ARG WITH_CONTRIB
+ARG NUM_THREADS
 ARG OPENCV_VERSION
 ARG NODEJS_MAJOR_VERSION
-
-# FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu$UBUNTU_VERSION
-FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu$UBUNTU_VERSION
-ENV DEBIAN_FRONTEND noninteractive
 
 # Display arguments
 RUN echo " \
@@ -20,7 +20,7 @@ RUN echo " \
 "
 
 RUN rm /etc/apt/sources.list.d/cuda.list
-RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+# RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # install dependencies via apt
 ENV DEBCONF_NOWARNINGS yes
