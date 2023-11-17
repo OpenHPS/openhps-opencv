@@ -12,7 +12,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.8.1-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -20,13 +20,13 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:
           path: |
             **/dist
-          key: ${{ runner.os }}-build-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Installing dependencies
         run: |
           npm install --unsafe-perm
@@ -46,7 +46,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.8.1-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -54,7 +54,7 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('package-lock.json') }}
       - name: Quality
         run: |
           npm run lint
@@ -64,7 +64,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.8.1-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -72,20 +72,20 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:
           path: |
             **/dist
-          key: ${{ runner.os }}-build-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Load test and coverage cache
         uses: actions/cache@v2
         with:
           path: |
             **/test-results.xml
             **/coverage
-          key: ${{ runner.os }}-test-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-test-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Test
         run: |
           npm run cover:ci
@@ -95,7 +95,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.8.1-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load dependency cache
@@ -103,19 +103,19 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:
           path: |
             **/dist
-          key: ${{ runner.os }}-build-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Load document cache
         uses: actions/cache@v2
         with:
           path: |
             **/docs/out
-          key: ${{ runner.os }}-docs-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-docs-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Build documentation
         run: |
           npm run build:typedoc
@@ -127,7 +127,7 @@ jobs:
       - quality
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.8.1-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load document cache
@@ -135,7 +135,7 @@ jobs:
         with:
           path: |
             **/docs/out
-          key: ${{ runner.os }}-docs-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-docs-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Publish Documentation
         uses: actions/upload-artifact@v2
         with:
@@ -154,7 +154,7 @@ jobs:
     needs: test_coverage
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.8.1-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.5.5-contrib
     steps:
       - uses: actions/checkout@v3
       - name: Load test and coverage cache
@@ -163,7 +163,7 @@ jobs:
           path: |
             **/test-results.xml
             **/coverage
-          key: ${{ runner.os }}-test-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-test-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Publish unit test results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
@@ -183,7 +183,7 @@ jobs:
       - test_coverage
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.8.1-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.5.5-contrib
     if: github.ref == 'refs/heads/dev'
     steps:
       - uses: actions/checkout@v3
@@ -192,13 +192,13 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:
           path: |
             **/dist
-          key: ${{ runner.os }}-build-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Configure Publish
         run: |
           git config --global user.name 'CI'
@@ -225,7 +225,7 @@ jobs:
       - test_coverage
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.8.1-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.5.5-contrib
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
@@ -234,13 +234,13 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('package-lock.json') }}
       - name: Load build cache
         uses: actions/cache@v2
         with:
           path: |
             **/dist
-          key: ${{ runner.os }}-build-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
+          key: ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-${{ github.run_number }}
       - name: Configure Publish
         run: |
           git config --global user.name 'CI'
