@@ -10,7 +10,7 @@ services:
         - NUM_THREADS=8
         - OPENCV_VERSION=4.8.1
         - NODEJS_MAJOR_VERSION=20
-        - UBUNTU_VERSION=18.04
+        - UBUNTU_VERSION=20.04
     container_name: 'opencv-cpu'
   opencv-cuda:
     network_mode: host
@@ -22,7 +22,7 @@ services:
         - NUM_THREADS=8
         - OPENCV_VERSION=4.8.1
         - NODEJS_MAJOR_VERSION=20
-        - UBUNTU_VERSION=18.04
+        - UBUNTU_VERSION=20.04
     container_name: 'opencv-cuda'
     deploy:
       resources:

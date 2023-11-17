@@ -12,9 +12,8 @@ jobs:
     strategy:
       matrix:
         ubuntu-version:
-          - 18.04
+          - 20.04
         node-version:
-          - 14
           - 20
         opencv-version:
           - 4.5.5
