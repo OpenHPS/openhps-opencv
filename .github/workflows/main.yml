@@ -29,6 +29,8 @@ jobs:
           key: ${{ runner.os }}-build-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
       - name: Installing dependencies
         run: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
           npm install --unsafe-perm
       - name: Build
         run: |
@@ -57,6 +59,8 @@ jobs:
           key: ${{ runner.os }}-dependencies-v1-${{ hashFiles('**/package-lock.json') }}
       - name: Quality
         run: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
           npm run lint
 
   test_coverage:
@@ -88,6 +92,8 @@ jobs:
           key: ${{ runner.os }}-test-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
       - name: Test
         run: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
           npm run cover:ci
 
   documentation:
@@ -118,6 +124,8 @@ jobs:
           key: ${{ runner.os }}-docs-v1-${{ hashFiles('**/package-lock.json') }}-${{ github.run_number }}
       - name: Build documentation
         run: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
           npm run build:typedoc
 
   publish_documentation:
@@ -206,6 +214,8 @@ jobs:
           git config --global --add safe.directory /__w/openhps-opencv/openhps-opencv
       - name: Bump version development
         run: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
           npm run bump:development
       - name: Publish to NPM (dev)
         uses: JS-DevTools/npm-publish@v1
@@ -248,6 +258,8 @@ jobs:
           git config --global --add safe.directory /__w/openhps-opencv/openhps-opencv
       - name: Bump version release
         run: |
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
           npm run bump:release
       - name: Publish to NPM (master)
         uses: JS-DevTools/npm-publish@v1
