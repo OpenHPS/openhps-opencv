@@ -32,6 +32,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           npm install --unsafe-perm
+        shell: bash
       - name: Build
         run: |
           npm run build
@@ -62,6 +63,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           npm run lint
+        shell: bash
 
   test_coverage:
     name: Unit tests
@@ -95,6 +97,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           npm run cover:ci
+        shell: bash
 
   documentation:
     name: Build documentation
@@ -127,6 +130,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           npm run build:typedoc
+        shell: bash
 
   publish_documentation:
     name: Publish documentation
@@ -217,6 +221,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           npm run bump:development
+        shell: bash
       - name: Publish to NPM (dev)
         uses: JS-DevTools/npm-publish@v1
         with:
@@ -261,6 +266,7 @@ jobs:
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           npm run bump:release
+        shell: bash
       - name: Publish to NPM (master)
         uses: JS-DevTools/npm-publish@v1
         with:
