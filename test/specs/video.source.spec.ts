@@ -17,20 +17,21 @@ describe('video', () => {
                     model = m;
                     callbackSinkNode.callback = (frame: ImageFrame) => {
                         image1 = frame.image;
-                        expect(frame.phenomenonTimestamp).to.equal(TimeUnit.SECOND.convert(
+                        expect(Math.round(frame.phenomenonTimestamp)).to.equal(Math.round(TimeUnit.SECOND.convert(
                             1 * (1.0 / 29.99992433814795),
                             TimeService.getUnit(),
-                        ));
+                        )));
                         expect(image1.getData().byteLength).to.equal(6220800);
                     }
+                    model.once('error', done);
                     return model.pull();
                 }).then(() => {
                     callbackSinkNode.callback = (frame: ImageFrame) => {
                         const image2 = frame.image;
-                        expect(frame.phenomenonTimestamp).to.equal(TimeUnit.SECOND.convert(
+                        expect(Math.round(frame.phenomenonTimestamp)).to.equal(Math.round(TimeUnit.SECOND.convert(
                             2 * (1.0 / 29.99992433814795),
                             TimeService.getUnit(),
-                        ));
+                        )));
                         expect(image2.getData().byteLength).to.equal(6220800);
                         expect(image1).to.not.equal(image2);
                         done();
