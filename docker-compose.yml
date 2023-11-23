@@ -21,5 +21,7 @@ services:
     volumes: 
     - ./:/opt/app
     - node_modules:/opt/app/node_modules/
+  opencvjs-build:
+    image: emscripten/emsdk:2.0.10
 volumes:
   node_modules:
