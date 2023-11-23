@@ -22,7 +22,7 @@ function registerTypes() {
     });
 }
 
-if (cv.onRuntimeInitialized) {
+if (window) {
     (cv as any).onRuntimeInitialized = () => {
         registerTypes();
     };
