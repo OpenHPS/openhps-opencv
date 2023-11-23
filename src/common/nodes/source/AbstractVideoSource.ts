@@ -22,11 +22,11 @@ export abstract class AbstractVideoSource extends SourceNode<VideoFrame> {
     constructor(options?: VideoSourceOptions) {
         super(options);
 
-        this.once('build', this._onBuild.bind(this));
+        this.once('build', this.onBuild.bind(this));
         this.once('destroy', this.stop.bind(this));
     }
 
-    private _onBuild(): void {
+    protected onBuild(): void {
         if (this.options.videoSource) {
             this.load(this.options.videoSource);
         }
