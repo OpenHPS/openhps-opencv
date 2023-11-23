@@ -1,0 +1,129 @@
+{
+  "name": "@openhps/opencv",
+  "version": "0.1.4",
+  "description": "Open Hybrid Positioning System - OpenCV component",
+  "author": "Maxim Van de Wynckel",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenHPS/openhps-opencv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OpenHPS/openhps-opencv/issues"
+  },
+  "homepage": "https://openhps.org",
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/types/index.d.ts",
+  "unpkg": "./dist/web/openhps-opencv.min.js",
+  "jsdelivr": "./dist/web/openhps-opencv.min.js",
+  "lsd:module": true,
+  "module": "./dist/esm5/index.js",
+  "es2015": "./dist/esm/index.js",
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "LICENSE"
+  ],
+  "scripts": {
+    "postinstall": "npm run build:opencv",
+    "test": "mocha --config test/.mocharc.json",
+    "test:docker": "docker-compose run opencv-cpu /opt/app/docker/docker-entrypoint.sh",
+    "cover": "nyc mocha --config test/.mocharc.json && nyc report --reporter=cobertura",
+    "cover:ci": "nyc mocha --config test/.mocharc.json --reporter mocha-junit-reporter && nyc report --reporter=cobertura",
+    "cover:ci:docker": "docker-compose run -w /opt/app opencv-cpu npm run cover:ci",
+    "lint": "eslint src/**",
+    "clean": "shx rm -rf ./dist && shx rm -rf ./docs/out",
+    "build": "npm run clean && npm-run-all --parallel build:ts:* && npm run build:webpack",
+    "build:opencv": "opencv-build-npm",
+    "build:components": "componentsjs-generator",
+    "build:quick": "npm-run-all --parallel build:ts:* && npm run build:webpack",
+    "build:typedoc": "typedoc --options docs/typedoc.json",
+    "build:ts:cjs": "tsc --build ./tsconfig/tsconfig.bundle.cjs.json",
+    "build:ts:esm": "tsc --build ./tsconfig/tsconfig.bundle.esm.json",
+    "build:ts:esm5": "tsc --build ./tsconfig/tsconfig.bundle.esm5.json",
+    "build:ts:types": "tsc --build ./tsconfig/tsconfig.bundle.types.json",
+    "build:webpack": "npm-run-all --parallel build:webpack:*",
+    "build:webpack:prod": "webpack --env prod --",
+    "build:webpack:dev": "webpack --env dev --",
+    "deploy:typedoc": "gh-pages -d ./docs/out",
+    "bump:development": "standard-version --prerelease alpha -m 'chore(alpha): %s' --skip.changelog",
+    "bump:beta": "standard-version --prerelease beta -m 'chore(beta): %s' --skip.changelog",
+    "bump:release": "standard-version -m 'chore(release): %s' --skip.changelog"
+  },
+  "dependencies": {
+    "@openhps/video": ">=0.1.11",
+    "@techstark/opencv-js": "^4.8.0-release.10",
+    "@u4/opencv4nodejs": "^6.5.2"
+  },
+  "peerDependencies": {
+    "@openhps/core": ">=0.6.3",
+    "reflect-metadata": ">=0.1.13"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@openhps/core": ">=0.6.3",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "@typescript-eslint/eslint-plugin": ">=6.12.0",
+    "@typescript-eslint/parser": ">=6.12.0",
+    "chai": "^4.3.10",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-deprecation": "^2.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsdoc": "^46.9.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.3",
+    "mocha": "^10.2.0",
+    "mocha-junit-reporter": "^2.2.1",
+    "npm-run-all": "^4.1.5",
+    "nyc": "^15.1.0",
+    "prettier": "^3.1.0",
+    "reflect-metadata": ">=0.1.13",
+    "shx": "^0.3.4",
+    "standard-version": "^9.5.0",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.25.3",
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "nyc": {
+    "branches": 10,
+    "lines": 20,
+    "functions": 20,
+    "statements": 20,
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "test"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "cache": true,
+    "all": true,
+    "check-coverage": true,
+    "report-dir": "./coverage"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
