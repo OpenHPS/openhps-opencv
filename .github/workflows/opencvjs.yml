@@ -7,29 +7,19 @@ jobs:
   build:
     name: Build OpenCV.js
     runs-on: ubuntu-latest
-    strategy:
-        matrix:
-            opencv-version:
-                - 4.6.0
-                - 4.8.1
-            opencv-contrib:
-                - true
-                - false
     container:
-      image: emscripten/emsdk:2.0.10
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.6.0-contrib
     steps:
-        - uses: actions/checkout@v3
-        - name: Get number of CPU cores
-          uses: SimenB/github-actions-cpu-cores@v1
-          id: cpu-cores
-        - name: Getting OpenCV
-          run:
-            set -x && \
-            wget -O opencv_${{ matrix.opencv-version }}.zip https://github.com/opencv/opencv/archive/${{ matrix.opencv-version }}.zip && \
-            unzip -q opencv_${{ matrix.opencv-version }}.zip && \
-            rm -rf opencv_${{ matrix.opencv-version }}.zip && \
-            if [ -n "${{ matrix.opencv-contrib }}" ]; then \
-                wget -O opencv_contrib_${{ matrix.opencv-version }}.zip https://github.com/opencv/opencv_contrib/archive/${{ matrix.opencv-version }}.zip; \
-                unzip -q opencv_contrib_${{ matrix.opencv-version }}.zip; \
-                rm -rf opencv_contrib_${{ matrix.opencv-version }}.zip; \
-            fi
+      - name: Build OpenCV.js
+        run: |
+          cd /opt/opencv-4.6.0/
+          /opt/emsdk/upstream/emscripten/emcmake python3 ./platforms/js/build_js.py build_js \
+            --cmake_option="-DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${OPENCV_VERSION}/modules/" \
+            --cmake_option="-DBUILD_opencv_aruco=ON"
+        shell: bash
+      - name: Publish OpenCV.js
+        uses: actions/upload-artifact@v2
+        with:
+          name: web
+          path: |
+            /opt/opencv-4.6.0/build_js/bin/opencv.js

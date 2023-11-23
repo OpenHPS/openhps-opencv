@@ -23,9 +23,13 @@ function registerTypes() {
 }
 
 if (typeof window === 'object') {
-    (cv as any).onRuntimeInitialized = () => {
+    if (window.cv) {
         registerTypes();
-    };
+    } else {
+        (cv as any).onRuntimeInitialized = () => {
+            registerTypes();
+        };
+    }
 } else {
     registerTypes();
 }
