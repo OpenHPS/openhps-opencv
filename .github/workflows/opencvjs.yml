@@ -14,7 +14,7 @@ jobs:
         run: |
           cd /opt/opencv-4.6.0/
           /opt/emsdk/upstream/emscripten/emcmake python3 ./platforms/js/build_js.py build_js \
-            --cmake_option="-DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${OPENCV_VERSION}/modules/" \
+            --cmake_option="-DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-4.6.0/modules/" \
             --cmake_option="-DBUILD_opencv_aruco=ON"
         shell: bash
       - name: Publish OpenCV.js
