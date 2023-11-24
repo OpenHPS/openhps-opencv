@@ -21,8 +21,17 @@ export function initialize() {
     });
 }
 
-if (typeof window === 'object' && (window as any).cv.Mat) {
-    initialize();
+if (typeof window === 'object') {
+    if ((window as any).cv.Mat) {
+        initialize();
+    } else {
+        // eslint-disable-next-line
+        var Module = {
+            onRuntimeInitialized: function () {
+                initialize();
+            },
+        };
+    }
 } else {
     initialize();
 }
