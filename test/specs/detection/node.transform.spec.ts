@@ -1,5 +1,5 @@
 import 'mocha';
-import { OpenCV as cv, ImageResizeNode, ImageSource, ImageTransformNode, ImageFrame } from '../../../src';
+import { cv, ImageResizeNode, ImageSource, ImageTransformNode, ImageFrame } from '../../../src';
 import { ModelBuilder, CallbackSinkNode } from '@openhps/core';
 import { expect } from 'chai';
 
