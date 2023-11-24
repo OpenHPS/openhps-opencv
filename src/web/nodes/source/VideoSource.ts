@@ -1,23 +1,7 @@
 import { CV_8UC4, Mat, VideoCapture } from '@u4/opencv4nodejs';
-import { AbstractVideoSource, VideoSourceOptions } from '../../../common/nodes';
+import { AbstractVideoSource } from '../../../common/nodes';
 
 export class VideoSource extends AbstractVideoSource {
-    constructor(options?: VideoSourceOptions) {
-        super(options);
-
-        this.once('build', this.onBuild.bind(this));
-        this.once('destroy', this.stop.bind(this));
-    }
-
-    protected onBuild(): void {
-        if (this.options.videoSource) {
-            this.load(this.options.videoSource);
-        }
-        if (this.options.autoPlay) {
-            this.play();
-        }
-    }
-
     /**
      * Load video from file, stream, port
      * @param {string} videoSource File path

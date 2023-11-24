@@ -32,7 +32,7 @@ const defaultConfig = env => ({
 
 const bundle = (env, module, external) => ({
   name: PROJECT_NAME,
-  entry: `./dist/${module ? "esm" : "cjs"}/index.js`,
+  entry: `./dist/${module ? "esm" : "cjs"}/index.web.js`,
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: `web/${PROJECT_NAME}${!external ? "" : ".external"}${module ? ".es" : ""}${env.prod ? ".min" : ""}.js`,
