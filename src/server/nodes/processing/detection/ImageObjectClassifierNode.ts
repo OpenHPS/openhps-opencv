@@ -1,17 +1,17 @@
 import { ProcessingNode } from '@openhps/core';
 import { ImageFrame, ImageFeatureObject, ImageRectShape } from '../../../../common';
-import { CascadeClassifier } from '@u4/opencv4nodejs';
+import { cv } from '../../../cv';
 
 /**
  * Classify image features
  */
 export class ImageObjectClassifierNode<T extends ImageFeatureObject> extends ProcessingNode<ImageFrame, ImageFrame> {
-    private _classifier: CascadeClassifier;
+    private _classifier: cv.CascadeClassifier;
     private _imageObjectType: new () => T;
 
     private _maxResults: number;
 
-    constructor(classifier: CascadeClassifier, imageObjectType: new () => T, maxResults = -1) {
+    constructor(classifier: cv.CascadeClassifier, imageObjectType: new () => T, maxResults = -1) {
         super();
         this._classifier = classifier;
         this._imageObjectType = imageObjectType;

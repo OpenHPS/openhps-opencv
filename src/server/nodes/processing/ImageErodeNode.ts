@@ -1,5 +1,6 @@
-import { ImageFrame, OpenCV } from '../../../common';
+import { ImageFrame } from '../../../common';
 import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
+import { cv } from '../../cv';
 
 export class ImageErodeNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {
     protected options: ImageErodeOptions;
@@ -8,11 +9,11 @@ export class ImageErodeNode<InOut extends ImageFrame> extends ImageProcessingNod
         super(options);
     }
 
-    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: cv.Mat): Promise<cv.Mat> {
         return new Promise((resolve) => {
             const mat = image.erode(
-                new OpenCV.Mat(),
-                new OpenCV.Point2(0, 0),
+                new cv.Mat(),
+                new cv.Point2(0, 0),
                 this.options.iterations ? this.options.iterations : 1,
             );
             resolve(mat);

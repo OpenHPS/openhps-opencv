@@ -1,7 +1,7 @@
 import { ImageFrame } from '../../../common';
 import { Mat, Point2, Size } from '@u4/opencv4nodejs';
-import * as cv from '@u4/opencv4nodejs';
 import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
+import { cv } from '../../cv';
 
 export class ImageTransformNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {
     protected options: ImageTransformOptions;

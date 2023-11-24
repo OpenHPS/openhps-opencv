@@ -1,5 +1,6 @@
-import { ImageFrame, OpenCV } from '../../../common';
+import { ImageFrame } from '../../../common';
 import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
+import { cv } from '../../cv';
 
 export class GaussianBlurNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {
     protected options: GaussianBlurOptions;
@@ -8,10 +9,10 @@ export class GaussianBlurNode<InOut extends ImageFrame> extends ImageProcessingN
         super(options);
     }
 
-    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: cv.Mat): Promise<cv.Mat> {
         return new Promise((resolve, reject) => {
             image
-                .gaussianBlurAsync(new OpenCV.Size(this.options.kernelSize, this.options.kernelSize), 0)
+                .gaussianBlurAsync(new cv.Size(this.options.kernelSize, this.options.kernelSize), 0)
                 .then((mat) => {
                     resolve(mat);
                 })

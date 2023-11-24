@@ -1,7 +1,7 @@
-import { Mat } from '@u4/opencv4nodejs';
-import { ImageFrame, OpenCV } from '../../../common';
+import { ImageFrame } from '../../../common';
 import { GaussianBlurOptions } from '../../../server';
 import { ImageProcessingNode } from './ImageProcessingNode';
+import { cv } from '../../cv';
 
 export class GaussianBlurNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {
     protected options: GaussianBlurOptions;
@@ -10,15 +10,10 @@ export class GaussianBlurNode<InOut extends ImageFrame> extends ImageProcessingN
         super(options);
     }
 
-    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: cv.Mat): Promise<cv.Mat> {
         return new Promise((resolve) => {
-            const dst = new Mat();
-            (OpenCV as any).GaussianBlur(
-                image,
-                dst,
-                new OpenCV.Size(this.options.kernelSize, this.options.kernelSize),
-                0,
-            );
+            const dst = new cv.Mat();
+            cv.GaussianBlur(image, dst, new cv.Size(this.options.kernelSize, this.options.kernelSize), 0);
             resolve(dst);
         });
     }

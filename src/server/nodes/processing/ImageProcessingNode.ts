@@ -1,5 +1,6 @@
-import { ImageFrame, OpenCV } from '../../../common';
+import { ImageFrame } from '../../../common';
 import { ProcessingNode, ProcessingNodeOptions } from '@openhps/core';
+import { cv } from '../../cv';
 
 export abstract class ImageProcessingNode<InOut extends ImageFrame> extends ProcessingNode<InOut> {
     protected options: ImageProcessingOptions;
@@ -23,7 +24,7 @@ export abstract class ImageProcessingNode<InOut extends ImageFrame> extends Proc
         });
     }
 
-    public abstract processImage(image: OpenCV.Mat, frame?: InOut): Promise<OpenCV.Mat>;
+    public abstract processImage(image: cv.Mat, frame?: InOut): Promise<cv.Mat>;
 }
 
 export type ImageProcessingOptions = ProcessingNodeOptions;

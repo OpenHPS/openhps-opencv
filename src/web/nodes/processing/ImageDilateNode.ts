@@ -1,7 +1,7 @@
-import { Mat } from '@u4/opencv4nodejs';
-import { ImageFrame, OpenCV } from '../../../common';
+import { ImageFrame } from '../../../common';
 import { ImageDilateOptions } from '../../../server';
 import { ImageProcessingNode } from './ImageProcessingNode';
+import { cv } from '../../cv';
 
 export class ImageDilateNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {
     protected options: ImageDilateOptions;
@@ -10,18 +10,12 @@ export class ImageDilateNode<InOut extends ImageFrame> extends ImageProcessingNo
         super(options);
     }
 
-    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: cv.Mat): Promise<cv.Mat> {
         return new Promise((resolve) => {
-            const dst = new Mat();
-            const kernel = new Mat();
-            (OpenCV as any).dilate(
-                image,
-                dst,
-                kernel,
-                new (OpenCV as any).Point(0, 0),
-                this.options.iterations ? this.options.iterations : 1,
-            );
-            (kernel as any).delete();
+            const dst = new cv.Mat();
+            const kernel = new cv.Mat();
+            cv.dilate(image, dst, kernel, new cv.Point(0, 0), this.options.iterations ? this.options.iterations : 1);
+            kernel.delete();
             resolve(dst);
         });
     }

@@ -1,6 +1,6 @@
 import { ImageFrame } from '../../../../common';
 import { ProcessingNode, ProcessingNodeOptions } from '@openhps/core';
-import { RETR_EXTERNAL, CHAIN_APPROX_SIMPLE, Contour } from '@u4/opencv4nodejs';
+import { cv } from '../../../cv';
 
 export class ContourDetectionNode<InOut extends ImageFrame> extends ProcessingNode<InOut, InOut> {
     protected options: ContourDetectionOptions;
@@ -13,9 +13,9 @@ export class ContourDetectionNode<InOut extends ImageFrame> extends ProcessingNo
         return new Promise((resolve) => {
             if (frame.image) {
                 // eslint-disable-next-line
-                const contours: Contour[] = frame.image.findContours(
-                    this.options.mode ? this.options.mode : RETR_EXTERNAL,
-                    this.options.method ? this.options.method : CHAIN_APPROX_SIMPLE,
+                const contours: cv.Contour[] = frame.image.findContours(
+                    this.options.mode ? this.options.mode : cv.RETR_EXTERNAL,
+                    this.options.method ? this.options.method : cv.CHAIN_APPROX_SIMPLE,
                 );
             }
             resolve(frame);

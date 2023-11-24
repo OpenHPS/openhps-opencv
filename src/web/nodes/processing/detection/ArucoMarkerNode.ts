@@ -1,5 +1,6 @@
-import { ImageFrame, OpenCV } from '../../../../common';
+import { ImageFrame } from '../../../../common';
 import { ImageProcessingNode, ImageProcessingOptions } from '../ImageProcessingNode';
+import { cv } from '../../../cv';
 
 export class ArucoMarkerNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {
     protected options: ArucoMarkerOptions;
@@ -8,7 +9,7 @@ export class ArucoMarkerNode<InOut extends ImageFrame> extends ImageProcessingNo
         super(options);
     }
 
-    public processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    public processImage(image: cv.Mat): Promise<cv.Mat> {
         return new Promise((resolve) => {
             resolve(image);
         });

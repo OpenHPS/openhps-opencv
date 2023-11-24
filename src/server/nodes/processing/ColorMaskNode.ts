@@ -1,5 +1,6 @@
-import { ImageFrame, OpenCV } from '../../../common';
+import { ImageFrame } from '../../../common';
 import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
+import { cv } from '../../cv';
 
 export class ColorMaskNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {
     protected options: ColorMaskOptions;
@@ -8,12 +9,12 @@ export class ColorMaskNode<InOut extends ImageFrame> extends ImageProcessingNode
         super(options);
     }
 
-    processImage(image: OpenCV.Mat): Promise<OpenCV.Mat> {
+    processImage(image: cv.Mat): Promise<cv.Mat> {
         return new Promise((resolve) => {
-            let mat = image.cvtColor(OpenCV.COLOR_BGR2HSV);
+            let mat = image.cvtColor(cv.COLOR_BGR2HSV);
             mat = mat.inRange(
-                new OpenCV.Vec3(this.options.minRange[0], this.options.minRange[1], this.options.minRange[2]),
-                new OpenCV.Vec3(this.options.maxRange[0], this.options.maxRange[1], this.options.maxRange[2]),
+                new cv.Vec3(this.options.minRange[0], this.options.minRange[1], this.options.minRange[2]),
+                new cv.Vec3(this.options.maxRange[0], this.options.maxRange[1], this.options.maxRange[2]),
             );
             resolve(mat);
         });

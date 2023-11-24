@@ -1,6 +1,6 @@
 import { ImageFrame } from '../../../common';
-import { INTER_CUBIC, Mat } from '@u4/opencv4nodejs';
 import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
+import { cv } from '../../cv';
 
 /**
  * Image resize node
@@ -19,7 +19,7 @@ export class ImageResizeNode<InOut extends ImageFrame> extends ImageProcessingNo
         super(options);
     }
 
-    processImage(image: Mat): Promise<Mat> {
+    processImage(image: cv.Mat): Promise<cv.Mat> {
         return new Promise((resolve) => {
             // Get the scaling
             let scale = 1.0;
@@ -34,7 +34,7 @@ export class ImageResizeNode<InOut extends ImageFrame> extends ImageProcessingNo
                 Math.round(image.sizes[1] * scale),
                 this.options.fx ? this.options.fx : 2,
                 this.options.fy ? this.options.fy : 2,
-                this.options.interpolation ? this.options.interpolation : INTER_CUBIC,
+                this.options.interpolation ? this.options.interpolation : cv.INTER_CUBIC,
             );
             resolve(mat);
         });
