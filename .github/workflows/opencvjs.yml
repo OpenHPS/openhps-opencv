@@ -8,18 +8,23 @@ jobs:
     name: Build OpenCV.js
     runs-on: ubuntu-latest
     container:
-      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv4.6.0-contrib
+      image: openhps/opencv-nodejs:ubuntu20.04-node20-opencv${{ matrix.opencv-version }}-contrib
+    strategy:
+      matrix:
+        opencv-version:
+          - 4.6.0
+          - 4.8.1
     steps:
       - name: Build OpenCV.js
         run: |
-          cd /opt/opencv-4.6.0/
+          cd /opt/opencv-${{ matrix.opencv-version }}/
           /opt/emsdk/upstream/emscripten/emcmake python3 ./platforms/js/build_js.py build_js \
-            --cmake_option="-DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-4.6.0/modules/" \
+            --cmake_option="-DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${{ matrix.opencv-version }}/modules/" \
             --cmake_option="-DBUILD_opencv_aruco=ON"
         shell: bash
       - name: Publish OpenCV.js
         uses: actions/upload-artifact@v2
         with:
-          name: web
+          name: opencv-${{ matrix.opencv-version }}
           path: |
-            /opt/opencv-4.6.0/build_js/bin/opencv.js
+            /opt/opencv-${{ matrix.opencv-version }}/build_js/bin/opencv.js

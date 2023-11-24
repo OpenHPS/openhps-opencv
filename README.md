@@ -43,6 +43,7 @@ npm install @openhps/opencv --save
 - `openhps-opencv.external.js`: OpenHPS - OpenCV module without OpenCV.js
 
 #### Building a custom OpenCV.js
+
 ```bash
 git clone https://github.com/opencv/opencv.git
 cd opencv
@@ -52,6 +53,8 @@ docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
     --cmake_option="-DOPENCV_EXTRA_MODULES_PATH=/src/opencv_contrib/modules/" \
     --cmake_option="-DBUILD_opencv_aruco=ON"
 ```
+
+Please note that a user-build OpenCV.js returns a promise and therefore requires @openhps/opencv to be loaded after OpenCV was completely ready.
 
 ## Contributors
 The framework is open source and is mainly developed by PhD Student Maxim Van de Wynckel as part of his research towards *Hybrid Positioning and Implicit Human-Computer Interaction* under the supervision of Prof. Dr. Beat Signer.

@@ -1,11 +1,10 @@
 import { imdecode, imencode, Mat } from '@u4/opencv4nodejs';
-import * as cv from '@techstark/opencv-js';
 import { DataSerializer } from '@openhps/core';
 
 /**
- *
+ * Initialize OpenHPS OpenCV types
  */
-function registerTypes() {
+export function initialize() {
     DataSerializer.registerType(Mat, {
         serializer: (image: Mat) => {
             if (!image) {
@@ -22,16 +21,10 @@ function registerTypes() {
     });
 }
 
-if (typeof window === 'object') {
-    if (window.cv) {
-        registerTypes();
-    } else {
-        (cv as any).onRuntimeInitialized = () => {
-            registerTypes();
-        };
-    }
+if (typeof window === 'object' && (window as any).cv.Mat) {
+    initialize();
 } else {
-    registerTypes();
+    initialize();
 }
 
 export * from './features';
