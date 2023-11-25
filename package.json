@@ -28,6 +28,18 @@
     "src/**/*",
     "LICENSE"
   ],
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm5/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./web": {
+      "require": "./dist/cjs/index.web.js",
+      "import": "./dist/esm5/index.web.js",
+      "types": "./dist/types/index.web.d.ts"
+    }
+  },
   "scripts": {
     "postinstall": "npm run build:opencv",
     "test": "mocha --config test/.mocharc.json",
