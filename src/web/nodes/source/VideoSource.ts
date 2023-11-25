@@ -111,7 +111,7 @@ export class VideoSource extends SourceNode<VideoFrame> {
             videoFrame.fps = this.options.fps;
             this.readFrame()
                 .then((frameImage: cv.Mat) => {
-                    if (!frameImage || frameImage.empty) {
+                    if (!frameImage || frameImage.empty()) {
                         return resolve(undefined);
                     }
                     this.frame++; // Increase frame
