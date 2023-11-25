@@ -60,6 +60,12 @@ const bundle = (env, module, external) => ({
         amd: 'cv',
         root: ['cv']
       },
+      '@techstark/opencv-js': module ? "./opencv.js" : {
+        commonjs: 'cv',
+        commonjs2: 'cv',
+        amd: 'cv',
+        root: ['cv']
+      }
     } : {})
   },
   devtool: 'source-map',
@@ -67,7 +73,7 @@ const bundle = (env, module, external) => ({
   resolve: {
     alias: {
       typescript: false,
-      ...(!external ? { '@u4/opencv4nodejs': '@techstark/opencv-js' } : { '@techstark/opencv-js': false })
+      ...(!external ? { '@u4/opencv4nodejs': '@techstark/opencv-js' } : {})
     },
     fallback: {
       path: false,
