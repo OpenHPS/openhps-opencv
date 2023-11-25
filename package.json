@@ -26,7 +26,10 @@
   "files": [
     "dist/**/*",
     "src/**/*",
-    "LICENSE"
+    "LICENSE",
+    "web.js",
+    "web.ts",
+    "web.d.ts"
   ],
   "exports": {
     ".": {
