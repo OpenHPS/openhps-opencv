@@ -151,11 +151,11 @@ export class VideoSource extends SourceNode<VideoFrame> {
                 if (mat === undefined) {
                     mat = new cv.Mat(this.options.height, this.options.width, cv.CV_8UC4);
                 }
-                (this.videoCapture as any).read(mat);
+                this.videoCapture.read(mat);
                 resolve(mat);
             } catch (ex) {
                 if (this.mat == undefined) {
-                    (mat as any).delete(); // Clear
+                    mat.delete(); // Clear
                 }
                 reject(ex);
             }

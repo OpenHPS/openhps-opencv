@@ -70,22 +70,22 @@
     "bump:release": "standard-version -m 'chore(release): %s' --skip.changelog"
   },
   "dependencies": {
-    "@openhps/video": ">=0.1.11",
+    "@openhps/video": ">=0.1.13",
     "@techstark/opencv-js": "^4.8.0-release.10",
     "@u4/opencv4nodejs": "^6.5.2"
   },
   "peerDependencies": {
-    "@openhps/core": ">=0.6.3",
+    "@openhps/core": ">=0.6.4",
     "reflect-metadata": ">=0.1.13"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
-    "@openhps/core": ">=0.6.3",
+    "@openhps/core": ">=0.6.4",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
-    "@typescript-eslint/eslint-plugin": ">=6.12.0",
-    "@typescript-eslint/parser": ">=6.12.0",
+    "@typescript-eslint/eslint-plugin": ">=6.13.1",
+    "@typescript-eslint/parser": ">=6.13.1",
     "chai": "^4.3.10",
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
@@ -100,11 +100,12 @@
     "nyc": "^15.1.0",
     "prettier": "^3.1.0",
     "reflect-metadata": ">=0.1.13",
+    "serve": "^14.2.1",
     "shx": "^0.3.4",
     "standard-version": "^9.5.0",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.25.3",
-    "typescript": "^5.2.2",
+    "typedoc": "^0.25.4",
+    "typescript": "^5.3.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
