@@ -1,6 +1,6 @@
 {
   "name": "@openhps/opencv",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Open Hybrid Positioning System - OpenCV component",
   "author": "Maxim Van de Wynckel",
   "license": "Apache-2.0",
