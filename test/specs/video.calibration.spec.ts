@@ -5,7 +5,6 @@ import { CameraCalibrationNode, CameraObject, ImageFrame, ImageResizeNode, Image
 
 describe('video', () => {
     describe('calibration', () => {
-
         // it('should calibrate a camera object from images', (done) => {
         //     const callbackSinkNode = new CallbackSinkNode();
         //     let model;
@@ -38,7 +37,6 @@ describe('video', () => {
         //             model.on('error', done);
         //         });
         // }).timeout('5m');
-
         // it('should calibrate a camera object from a video', (done) => {
         //     const callbackSinkNode = new CallbackSinkNode();
         //     let model;
@@ -69,6 +67,5 @@ describe('video', () => {
         //             model.on('error', done);
         //         });
         // }).timeout('5m');
-        
     });
 });

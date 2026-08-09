@@ -6,15 +6,13 @@ import { ImageFrame } from '../../src';
 
 describe('image', () => {
     describe('frame', () => {
-
         it('should be serializable', () => {
             const frame = new ImageFrame();
-            frame.image = imread("./test/data/data-image-chess.jpg");
+            frame.image = imread('./test/data/data-image-chess.jpg');
             const serializedFrame = DataSerializer.serialize(frame);
-            console.log(serializedFrame)
+            console.log(serializedFrame);
             const deserializedFrame: ImageFrame = DataSerializer.deserialize(serializedFrame);
             expect(deserializedFrame.image).to.eql(frame.image);
         });
-        
     });
 });
