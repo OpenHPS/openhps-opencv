@@ -6,3 +6,8 @@ artifacts/
 .nyc_output/
 test/data/output.mp4
 test-results.xml
+
+# OpenHPS baseline
+.cache/
+xunit.xml
+.DS_Store

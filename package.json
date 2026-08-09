@@ -1,145 +1,129 @@
 {
-  "name": "@openhps/opencv",
-  "version": "0.3.6",
-  "description": "Open Hybrid Positioning System - OpenCV component",
-  "author": "Maxim Van de Wynckel",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/OpenHPS/openhps-opencv.git"
-  },
-  "bugs": {
-    "url": "https://github.com/OpenHPS/openhps-opencv/issues"
-  },
-  "homepage": "https://openhps.org",
-  "publishConfig": {
-    "access": "public"
-  },
-  "sideEffects": false,
-  "main": "./dist/cjs/index.js",
-  "types": "./dist/types/index.d.ts",
-  "unpkg": "./dist/web/openhps-opencv.min.js",
-  "jsdelivr": "./dist/web/openhps-opencv.min.js",
-  "lsd:module": true,
-  "module": "./dist/esm5/index.js",
-  "es2015": "./dist/esm/index.js",
-  "files": [
-    "dist/**/*",
-    "src/**/*",
-    "LICENSE",
-    "web.js",
-    "web.ts",
-    "web.d.ts"
-  ],
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm5/index.js",
-      "types": "./dist/types/index.d.ts"
+    "name": "@openhps/opencv",
+    "version": "0.3.6",
+    "description": "Open Hybrid Positioning System - OpenCV component",
+    "author": "Maxim Van de Wynckel",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/OpenHPS/openhps-opencv.git"
     },
-    "./web": {
-      "require": "./dist/cjs/index.web.js",
-      "import": "./dist/esm5/index.web.js",
-      "types": "./dist/types/index.web.d.ts"
+    "bugs": {
+        "url": "https://github.com/OpenHPS/openhps-opencv/issues"
+    },
+    "homepage": "https://openhps.org",
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "commonjs",
+    "sideEffects": false,
+    "main": "./dist/cjs/index.js",
+    "types": "./dist/types/index.d.ts",
+    "module": "./dist/esm/index.js",
+    "es2015": "./dist/esm/index.js",
+    "unpkg": "./dist/web/openhps-opencv.min.js",
+    "jsdelivr": "./dist/web/openhps-opencv.min.js",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.js"
+        },
+        "./web": {
+            "types": "./dist/types/index.web.d.ts",
+            "import": "./dist/esm/index.web.js",
+            "require": "./dist/cjs/index.web.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "dist/**/*",
+        "src/**/*",
+        "LICENSE",
+        "web.js",
+        "web.ts",
+        "web.d.ts"
+    ],
+    "scripts": {
+        "postinstall": "npm run build:opencv",
+        "test": "mocha --config test/.mocharc.json",
+        "test:docker": "docker-compose run opencv-cpu /opt/app/docker/docker-entrypoint.sh",
+        "cover": "c8 mocha --config test/.mocharc.json",
+        "cover:ci": "c8 mocha --config test/.mocharc.ci.json && c8 report --reporter=cobertura",
+        "cover:ci:docker": "docker-compose run -w /opt/app opencv-cpu npm run cover:ci",
+        "lint": "eslint . && node scripts/check-peers.mjs",
+        "clean": "shx rm -rf ./dist && shx rm -rf ./docs/out",
+        "build": "npm run clean && npm-run-all --parallel build:ts:* && npm run build:webpack",
+        "build:opencv": "opencv-build-npm",
+        "build:components": "componentsjs-generator",
+        "build:quick": "npm-run-all --parallel build:ts:* && npm run build:webpack",
+        "build:typedoc": "typedoc --options docs/typedoc.json",
+        "build:ts:cjs": "tsc --build ./tsconfig/tsconfig.bundle.cjs.json",
+        "build:ts:esm": "tsc --build ./tsconfig/tsconfig.bundle.esm.json && node ./scripts/finalize-esm.mjs",
+        "build:ts:types": "tsc --build ./tsconfig/tsconfig.bundle.types.json",
+        "build:webpack": "npm-run-all --parallel build:webpack:*",
+        "build:webpack:prod": "webpack --env prod --",
+        "build:webpack:dev": "webpack --env dev --",
+        "deploy:typedoc": "gh-pages -d ./docs/out",
+        "bump:development": "commit-and-tag-version --prerelease alpha -m 'chore(alpha): %s' --skip.changelog",
+        "bump:beta": "commit-and-tag-version --prerelease beta -m 'chore(beta): %s' --skip.changelog",
+        "bump:release": "commit-and-tag-version -m 'chore(release): %s' --skip.changelog",
+        "prepare": "husky"
+    },
+    "dependencies": {
+        "@openhps/video": "^1.0.3",
+        "@techstark/opencv-js": "^4.8.0-release.10",
+        "@u4/opencv4nodejs": "^6.5.2",
+        "tslib": "^2.8.1"
+    },
+    "peerDependencies": {
+        "@openhps/core": ">=1.0.16 <2",
+        "reflect-metadata": ">=0.2.2 <1"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.8.1",
+        "@commitlint/config-conventional": "^19.8.1",
+        "@eslint/js": "^9.34.0",
+        "@openhps/core": "^1.0.16",
+        "@types/chai": "^5.2.2",
+        "@types/mocha": "^10.0.10",
+        "c8": "^12.0.0",
+        "chai": "^6.2.2",
+        "commit-and-tag-version": "^13.1.2",
+        "eslint": "^9.34.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-jsdoc": "^54.1.1",
+        "eslint-plugin-prettier": "^5.5.4",
+        "globals": "^16.3.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
+        "mocha": "^11.8.0",
+        "mocha-junit-reporter": "^2.2.1",
+        "mocha-multi-reporters": "^1.5.1",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^3.9.6",
+        "reflect-metadata": ">=0.1.13",
+        "serve": "^14.2.1",
+        "shx": "^0.4.0",
+        "terser-webpack-plugin": "^5.3.14",
+        "ts-node": "^10.9.2",
+        "typedoc": "^0.28.20",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.66.0",
+        "webpack": "^5.101.3",
+        "webpack-cli": "^6.0.1"
+    },
+    "engines": {
+        "node": ">=22.0.0"
+    },
+    "packageManager": "npm@10.9.2",
+    "lsd:module": true,
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run lint",
+            "pre-push": "npm run test",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
     }
-  },
-  "scripts": {
-    "postinstall": "npm run build:opencv",
-    "test": "mocha --config test/.mocharc.json",
-    "test:docker": "docker-compose run opencv-cpu /opt/app/docker/docker-entrypoint.sh",
-    "cover": "nyc mocha --config test/.mocharc.json && nyc report --reporter=cobertura",
-    "cover:ci": "nyc mocha --config test/.mocharc.json --reporter mocha-junit-reporter && nyc report --reporter=cobertura",
-    "cover:ci:docker": "docker-compose run -w /opt/app opencv-cpu npm run cover:ci",
-    "lint": "eslint src/**",
-    "clean": "shx rm -rf ./dist && shx rm -rf ./docs/out",
-    "build": "npm run clean && npm-run-all --parallel build:ts:* && npm run build:webpack",
-    "build:opencv": "opencv-build-npm",
-    "build:components": "componentsjs-generator",
-    "build:quick": "npm-run-all --parallel build:ts:* && npm run build:webpack",
-    "build:typedoc": "typedoc --options docs/typedoc.json",
-    "build:ts:cjs": "tsc --build ./tsconfig/tsconfig.bundle.cjs.json",
-    "build:ts:esm": "tsc --build ./tsconfig/tsconfig.bundle.esm.json",
-    "build:ts:esm5": "tsc --build ./tsconfig/tsconfig.bundle.esm5.json",
-    "build:ts:types": "tsc --build ./tsconfig/tsconfig.bundle.types.json",
-    "build:webpack": "npm-run-all --parallel build:webpack:*",
-    "build:webpack:prod": "webpack --env prod --",
-    "build:webpack:dev": "webpack --env dev --",
-    "deploy:typedoc": "gh-pages -d ./docs/out",
-    "bump:development": "standard-version --prerelease alpha -m 'chore(alpha): %s' --skip.changelog",
-    "bump:beta": "standard-version --prerelease beta -m 'chore(beta): %s' --skip.changelog",
-    "bump:release": "standard-version -m 'chore(release): %s' --skip.changelog"
-  },
-  "dependencies": {
-    "@openhps/video": ">=0.1.13",
-    "@techstark/opencv-js": "^4.8.0-release.10",
-    "@u4/opencv4nodejs": "^6.5.2"
-  },
-  "peerDependencies": {
-    "@openhps/core": ">=0.6.4",
-    "reflect-metadata": ">=0.1.13"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^18.4.3",
-    "@commitlint/config-conventional": "^18.4.3",
-    "@openhps/core": ">=0.6.4",
-    "@types/chai": "^4.3.11",
-    "@types/mocha": "^10.0.6",
-    "@typescript-eslint/eslint-plugin": ">=6.13.1",
-    "@typescript-eslint/parser": ">=6.13.1",
-    "chai": "^4.3.10",
-    "eslint": "^8.54.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-deprecation": "^2.0.0",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-jsdoc": "^46.9.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "husky": "^8.0.3",
-    "mocha": "^10.2.0",
-    "mocha-junit-reporter": "^2.2.1",
-    "npm-run-all": "^4.1.5",
-    "nyc": "^15.1.0",
-    "prettier": "^3.1.0",
-    "reflect-metadata": ">=0.1.13",
-    "serve": "^14.2.1",
-    "shx": "^0.3.4",
-    "standard-version": "^9.5.0",
-    "ts-node": "^10.9.1",
-    "typedoc": "^0.25.4",
-    "typescript": "^5.3.2",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
-  },
-  "nyc": {
-    "branches": 10,
-    "lines": 20,
-    "functions": 20,
-    "statements": 20,
-    "include": [
-      "src"
-    ],
-    "exclude": [
-      "test"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "reporter": [
-      "lcov",
-      "text-summary"
-    ],
-    "cache": true,
-    "all": true,
-    "check-coverage": true,
-    "report-dir": "./coverage"
-  },
-  "engines": {
-    "node": ">=12.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run test",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  }
 }
