@@ -5,29 +5,30 @@ import { ModelBuilder } from '@openhps/core';
 
 describe('video', () => {
     describe('output', () => {
-
         it('should save a video frame by frame', (done) => {
             const source = new VideoSource({
                 autoPlay: true,
-                videoSource: "./test/data/data-gaze-1.mp4",
+                videoSource: './test/data/data-gaze-1.mp4',
                 fps: 30,
                 throttleRead: true,
-                throttlePush: true
+                throttlePush: true,
             });
             ModelBuilder.create()
                 .from(source)
-                .to(new VideoSink({
-                    codec: 'mp4v',
-                    filePath: './test/data/output.mp4',
-                    fps: 30
-                }))
-                .build().then(m => {
+                .to(
+                    new VideoSink({
+                        codec: 'mp4v',
+                        filePath: './test/data/output.mp4',
+                        fps: 30,
+                    }),
+                )
+                .build()
+                .then((m) => {
                     setTimeout(() => {
                         m.destroy();
                         done();
                     }, 1000);
                 });
         }).timeout(30000);
-
     });
 });

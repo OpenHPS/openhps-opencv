@@ -1,12 +1,10 @@
 import { VideoSource, FaceDetectionNode, EyeDetectionNode, ImageFrame, ImageFeatureObject } from '../../src';
 import { expect } from 'chai';
 import 'mocha';
-import { SinkNode } from '@openhps/core';
-import { ModelBuilder } from '@openhps/core';
+import { SinkNode, ModelBuilder } from '@openhps/core';
 
 describe('video', () => {
     describe('object classifier', () => {
-
         // it('should detect a face and two eyes', (done) => {
         //     ModelBuilder.create()
         //         .from(new VideoSource().load("./test/data/data-gaze-1.mp4"))
@@ -25,6 +23,5 @@ describe('video', () => {
         //             Promise.resolve(model.pull());
         //         });
         // }).timeout(30000);
-        
     });
 });
