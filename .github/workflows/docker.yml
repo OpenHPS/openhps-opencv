@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "OpenCV version: ${{ matrix.opencv-version }}"
           echo "NodeJS version: ${{ matrix.node-version }}"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Get number of CPU cores
         uses: SimenB/github-actions-cpu-cores@v1
         id: cpu-cores
