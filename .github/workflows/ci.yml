@@ -22,3 +22,10 @@ jobs:
             # 'std' does not name a type" once ubuntu-latest moved to 24.04. Pin to the
             # last image with a toolchain this OpenCV release compiles under.
             runner: 'ubuntu-22.04'
+            # The suites need a loadable @u4/opencv4nodejs addon. opencv-build-npm builds
+            # the OpenCV library itself here, but not a binding mocha can require, so
+            # every spec failed to load -- surfacing as a misleading "Cannot use import
+            # statement outside a module" once mocha fell back to import(). Native
+            # testing belongs to the docker images this repo already builds
+            # (docker.yml, opencvjs.yml, `npm run test:docker`).
+            run-tests: false
