@@ -57,9 +57,8 @@ docker run --rm -v $(pwd):/src -u $(id -u):$(id -g) \
 Please note that a user-build OpenCV.js returns a promise and therefore requires @openhps/opencv to be loaded after OpenCV was completely ready.
 
 ## Contributors
-The framework is open source and is mainly developed by PhD Student Maxim Van de Wynckel as part of his research towards *Hybrid Positioning and Implicit Human-Computer Interaction* under the supervision of Prof. Dr. Beat Signer.
+The framework is open source and was developed as part of the PhD of Maxim Van de Wynckel under the supervision of Prof. Dr. Beat Signer. It is currently maintained by [MVdW-Software](https://mvdw-software.com).
 
-Maintained by [MVdW-Software](https://mvdw-software.com).
 
 ## Contributing
 Use of OpenHPS, contributions and feedback is highly appreciated. Please read our [contributing guidelines](https://github.com/OpenHPS/.github/blob/HEAD/CONTRIBUTING.md) for more information.
