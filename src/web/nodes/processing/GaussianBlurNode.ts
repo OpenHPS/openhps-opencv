@@ -1,6 +1,5 @@
 import { ImageFrame } from '../../../common';
-import { GaussianBlurOptions } from '../../../server';
-import { ImageProcessingNode } from './ImageProcessingNode';
+import { ImageProcessingNode, ImageProcessingOptions } from './ImageProcessingNode';
 import { cv } from '../../cv';
 
 export class GaussianBlurNode<InOut extends ImageFrame> extends ImageProcessingNode<InOut> {
@@ -17,4 +16,8 @@ export class GaussianBlurNode<InOut extends ImageFrame> extends ImageProcessingN
             resolve(dst);
         });
     }
+}
+
+export interface GaussianBlurOptions extends ImageProcessingOptions {
+    kernelSize: number;
 }

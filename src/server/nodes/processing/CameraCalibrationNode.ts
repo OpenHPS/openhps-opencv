@@ -26,29 +26,38 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                 }
             }
 
-            let calibrationData: CameraCalibrationData;
             const gray: cv.Mat = data.image.bgrToGray();
-            let matrix: cv.Mat;
             // Get previously stored data
             this.getNodeData(data.source, {
                 objectPoints: [],
                 imagePoints: [],
             })
                 .then((nodeData: CameraCalibrationData) => {
-                    calibrationData = nodeData;
-                    return gray.findChessboardCornersAsync(
-                        boardSize,
-                        cv.CALIB_CB_ADAPTIVE_THRESH | cv.CALIB_CB_FAST_CHECK | cv.CALIB_CB_NORMALIZE_IMAGE,
-                    );
+                    return gray
+                        .findChessboardCornersAsync(
+                            boardSize,
+                            cv.CALIB_CB_ADAPTIVE_THRESH | cv.CALIB_CB_FAST_CHECK | cv.CALIB_CB_NORMALIZE_IMAGE,
+                        )
+                        .then((value: { returnValue: boolean; corners: cv.Point2[] }) => {
+                            return { nodeData, value };
+                        });
                 })
-                .then((value: { returnValue: boolean; corners: cv.Point2[] }) => {
-                    if (value.returnValue) {
-                        return gray.cornerSubPixAsync(value.corners, new cv.Size(4, 4), new cv.Size(0, 0), criteria);
-                    } else {
-                        resolve(data);
+                .then(({ nodeData: calibrationData, value }) => {
+                    // No chessboard corners in this frame - pass it through as-is
+                    if (!value.returnValue) {
+                        return { calibrationData, corners: null as cv.Point2[] | null };
                     }
+                    return gray
+                        .cornerSubPixAsync(value.corners, new cv.Size(4, 4), new cv.Size(0, 0), criteria)
+                        .then((corners: cv.Point2[]) => {
+                            return { calibrationData, corners };
+                        });
                 })
-                .then((corners: cv.Point2[]) => {
+                .then(({ calibrationData, corners }) => {
+                    if (!corners) {
+                        return resolve(data);
+                    }
+
                     calibrationData.imagePoints.push(corners.map((corner) => [corner.x, corner.y]));
                     calibrationData.objectPoints.push(objectPoint);
 
@@ -57,23 +66,31 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                         data.image.drawChessboardCorners(boardSize, corners, true);
                     }
 
-                    if (calibrationData.imagePoints.length >= this.options.minFrames) {
-                        const objectPoints: cv.Point3[][] = calibrationData.objectPoints.map((objectPointArray) =>
-                            objectPointArray.map((point) => new cv.Point3(point[0], point[1], point[2])),
-                        );
-                        const imagePoints: cv.Point2[][] = calibrationData.imagePoints.map((imagePointArray) =>
-                            imagePointArray.map((point) => new cv.Point2(point[0], point[1])),
-                        );
+                    // Store the calibration data before resolving, so the frame is not
+                    // pushed downstream before the calibration progress is persisted
+                    if (!(calibrationData.imagePoints.length >= this.options.minFrames)) {
+                        return this.setNodeData(data.source, calibrationData).then(() => {
+                            resolve(data);
+                        });
+                    }
 
-                        // Initialize camera matrix
-                        matrix = cv.initCameraMatrix2D(
-                            objectPoints as any,
-                            imagePoints as any,
-                            new cv.Size(data.image.cols, data.image.rows),
-                        );
+                    const objectPoints: cv.Point3[][] = calibrationData.objectPoints.map((objectPointArray) =>
+                        objectPointArray.map((point) => new cv.Point3(point[0], point[1], point[2])),
+                    );
+                    const imagePoints: cv.Point2[][] = calibrationData.imagePoints.map((imagePointArray) =>
+                        imagePointArray.map((point) => new cv.Point2(point[0], point[1])),
+                    );
 
-                        // Perform camera calibration based on chessboard
-                        return cv.calibrateCameraAsync(
+                    // Initialize camera matrix
+                    const matrix = cv.initCameraMatrix2D(
+                        objectPoints as any,
+                        imagePoints as any,
+                        new cv.Size(data.image.cols, data.image.rows),
+                    );
+
+                    // Perform camera calibration based on chessboard
+                    return cv
+                        .calibrateCameraAsync(
                             objectPoints as any,
                             imagePoints as any,
                             new cv.Size(data.image.cols, data.image.rows),
@@ -81,30 +98,17 @@ export class CameraCalibrationNode extends ProcessingNode<ImageFrame, ImageFrame
                             [],
                             cv.CALIB_USE_INTRINSIC_GUESS,
                             criteria,
-                        );
-                    }
-
-                    this.setNodeData(data.source, calibrationData)
-                        .then(() => {
-                            resolve(data);
-                        })
-                        .catch(reject);
-                })
-                .then((val) => {
-                    if (!val) {
-                        return resolve(data);
-                    }
-
-                    // Save calibration data
-                    data.source.distortionCoefficients = val.distCoeffs;
-                    data.source.cameraMatrix = Matrix3.fromArray(matrix.getDataAsArray());
-                    calibrationData.imagePoints = [];
-                    calibrationData.objectPoints = [];
-                    this.setNodeData(data.source, calibrationData)
-                        .then(() => {
-                            resolve(data);
-                        })
-                        .catch(reject);
+                        )
+                        .then((val) => {
+                            // Save calibration data
+                            data.source.distortionCoefficients = val.distCoeffs;
+                            data.source.cameraMatrix = Matrix3.fromArray(matrix.getDataAsArray());
+                            calibrationData.imagePoints = [];
+                            calibrationData.objectPoints = [];
+                            return this.setNodeData(data.source, calibrationData).then(() => {
+                                resolve(data);
+                            });
+                        });
                 })
                 .catch(reject);
         });

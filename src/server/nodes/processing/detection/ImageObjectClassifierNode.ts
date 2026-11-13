@@ -31,32 +31,41 @@ export class ImageObjectClassifierNode<T extends ImageFeatureObject> extends Pro
      * @returns {Promise<ImageFrame>} Image frame processing promise
      */
     process(data: ImageFrame): Promise<ImageFrame> {
-        return new Promise<ImageFrame>((resolve) => {
-            const result = this._classifier.detectMultiScaleGpu(data.image.bgrToGray()) as any;
-            if (result !== null) {
-                // Objects detected in image
-                const sortedIndexes = this._sortByNumDetections(result);
-                for (
-                    let i = 0;
-                    i <
-                    (this._maxResults !== -1
-                        ? this._maxResults > result.objects.length
-                            ? result.objects.length
-                            : this._maxResults
-                        : result.objects.length);
-                    i++
-                ) {
-                    const object = result.objects[sortedIndexes[i]];
-                    const numDetections = result.numDetections[sortedIndexes[i]];
+        return new Promise<ImageFrame>((resolve, reject) => {
+            try {
+                const result = this._classifier.detectMultiScaleGpu(data.image.bgrToGray()) as
+                    { objects?: unknown; numDetections?: unknown } | null | undefined;
+                // Depending on the OpenCV build the classifier does not always return the
+                // documented { objects, numDetections } shape (e.g. null/undefined when no
+                // objects were detected or when GPU detection is unavailable) - only accept
+                // the documented shape, otherwise treat the frame as having no detections.
+                if (result && Array.isArray(result.objects) && Array.isArray(result.numDetections)) {
+                    const objects = result.objects;
+                    const numDetections = result.numDetections as number[];
+                    // Objects detected in image
+                    const sortedIndexes = this._sortByNumDetections({ numDetections });
+                    const limit =
+                        this._maxResults !== -1
+                            ? Math.min(this._maxResults, numDetections.length)
+                            : numDetections.length;
+                    for (let i = 0; i < limit; i++) {
+                        const object = objects[sortedIndexes[i]];
+                        const detections = numDetections[sortedIndexes[i]];
+                        if (!object || detections === undefined) {
+                            break;
+                        }
 
-                    // Create an image feature for the image frame
-                    const imageFeature = new this._imageObjectType();
-                    imageFeature.shape = new ImageRectShape(object);
-                    imageFeature.confidence = numDetections;
-                    data.addObject(imageFeature);
+                        // Create an image feature for the image frame
+                        const imageFeature = new this._imageObjectType();
+                        imageFeature.shape = new ImageRectShape(object as cv.Rect);
+                        imageFeature.confidence = detections;
+                        data.addObject(imageFeature);
+                    }
                 }
+                resolve(data);
+            } catch (ex) {
+                reject(ex);
             }
-            resolve(data);
         });
     }
 }

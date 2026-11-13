@@ -25,29 +25,29 @@ export class StereoCameraCalibrationNode extends ProcessingNode<StereoImageFrame
                 ),
             );
 
-            Promise.all(promises).then((values: Array<{ returnValue: boolean; corners: cv.Point2[] }>) => {
-                if (values[0].returnValue && values[1].returnValue) {
-                    const imageFrame = new StereoImageFrame();
-                    imageFrame.source = data.source;
-                    imageFrame.left = data.left;
-                    imageFrame.right = data.right;
-                    const drawPromises = [];
-                    drawPromises.push(
-                        imageFrame.left.image.drawChessboardCornersAsync(boardSize, values[0].corners, true),
-                    );
-                    drawPromises.push(
-                        imageFrame.right.image.drawChessboardCornersAsync(boardSize, values[1].corners, true),
-                    );
+            Promise.all(promises)
+                .then((values: Array<{ returnValue: boolean; corners: cv.Point2[] }>) => {
+                    if (values[0].returnValue && values[1].returnValue) {
+                        const imageFrame = new StereoImageFrame();
+                        imageFrame.source = data.source;
+                        imageFrame.left = data.left;
+                        imageFrame.right = data.right;
+                        const drawPromises = [];
+                        drawPromises.push(
+                            imageFrame.left.image.drawChessboardCornersAsync(boardSize, values[0].corners, true),
+                        );
+                        drawPromises.push(
+                            imageFrame.right.image.drawChessboardCornersAsync(boardSize, values[1].corners, true),
+                        );
 
-                    Promise.all(drawPromises)
-                        .then(() => {
+                        return Promise.all(drawPromises).then(() => {
                             resolve(imageFrame);
-                        })
-                        .catch(reject);
-                } else {
-                    resolve(undefined);
-                }
-            });
+                        });
+                    }
+                    // No chessboard corners in either image - pass the frame through as-is
+                    resolve(data);
+                })
+                .catch(reject);
         });
     }
 }

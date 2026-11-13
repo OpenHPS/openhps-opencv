@@ -18,7 +18,9 @@ export class VideoSink<In extends VideoFrame> extends SinkNode<In> {
     }
 
     private _destroyWriter(): void {
-        this._writer.release();
+        if (this._writer) {
+            this._writer.release();
+        }
     }
 
     onPush(frame: In): Promise<void> {

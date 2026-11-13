@@ -8,7 +8,6 @@ import {
     CAP_PROP_BRIGHTNESS,
     CAP_PROP_CONTRAST,
     CAP_PROP_FRAME_COUNT,
-    CV_8UC4,
 } from '@u4/opencv4nodejs';
 
 export class VideoSource extends SourceNode<VideoFrame> {
@@ -19,12 +18,9 @@ export class VideoSource extends SourceNode<VideoFrame> {
     protected frame = 0;
     protected start: number;
     protected totalFrames: number;
-    protected mat: Mat;
 
     constructor(options?: VideoSourceOptions) {
         super(options);
-        this.options.sharedImageFrame =
-            this.options.sharedImageFrame === undefined ? true : this.options.sharedImageFrame;
         this.once('build', this._onBuild.bind(this));
         this.once('destroy', this.stop.bind(this));
     }
@@ -35,9 +31,6 @@ export class VideoSource extends SourceNode<VideoFrame> {
         }
         if (this.options.autoPlay) {
             this.play();
-        }
-        if (this.options.sharedImageFrame) {
-            this.mat = new Mat(this.options.height, this.options.width, CV_8UC4);
         }
     }
 
@@ -72,15 +65,8 @@ export class VideoSource extends SourceNode<VideoFrame> {
     }
 
     release(): void {
-        if (this.videoCapture.release) {
+        if (this.videoCapture && this.videoCapture.release) {
             this.videoCapture.release();
-        }
-        if (this.mat) {
-            if (this.mat.release) {
-                this.mat.release();
-            } else {
-                (this.mat as any).delete();
-            }
         }
     }
 
@@ -201,9 +187,4 @@ export interface VideoSourceOptions extends SourceNodeOptions {
      * @default 1
      */
     frameSkip?: number;
-    /**
-     * Shared image frame
-     * @default true
-     */
-    sharedImageFrame?: boolean;
 }
