@@ -29,7 +29,3 @@ jobs:
             # testing belongs to the docker images this repo already builds
             # (docker.yml, opencvjs.yml, `npm run test:docker`).
             run-tests: false
-            # Build only the OpenCV modules the package actually uses. The full
-            # module set produces a g++ command line long enough to trip E2BIG
-            # ("cc1plus: Argument list too long") on the runner's GCC 11.
-            autobuild-flags: '-DBUILD_LIST=core,imgproc,imgcodecs,videoio,objdetect,calib3d'
