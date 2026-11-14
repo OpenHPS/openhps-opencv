@@ -29,3 +29,7 @@ jobs:
             # testing belongs to the docker images this repo already builds
             # (docker.yml, opencvjs.yml, `npm run test:docker`).
             run-tests: false
+            # CI only builds TypeScript/Webpack and never runs the native suites, so skip
+            # the postinstall that compiles OpenCV from source (and opencv4nodejs' binding),
+            # which blows the g++ argument limit ("cc1plus: Argument list too long").
+            npm-ci-flags: '--ignore-scripts'
